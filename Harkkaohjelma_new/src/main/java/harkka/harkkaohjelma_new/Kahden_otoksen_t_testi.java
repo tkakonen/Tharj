@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class Kahden_otoksen_t_testi {
 
+////// Tämä luokka vaatii vastuun siirtämistä Muuttuja-luokalle kuten luokassa Yhden_otoksen_t_testi,
+ ///// samoin vastaavia muutoksia testiluokkaan.    
+    
     private String testinnimi;
     private ArrayList<Double> otos1;
     private ArrayList<Double> otos2;

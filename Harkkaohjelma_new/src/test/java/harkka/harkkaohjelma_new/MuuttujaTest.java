@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  *
  * @author DELL
  */
-public class Yhden_otoksen_t_testiTest {
+public class MuuttujaTest {
 
-    public Yhden_otoksen_t_testiTest() {
+    public MuuttujaTest() {
     }
 
     @BeforeClass
@@ -39,25 +39,47 @@ public class Yhden_otoksen_t_testiTest {
     }
 
     @Test
-    public void OtoskokoEiNolla() {
+    public void Keskiarvo() {
         ArrayList<Double> lista = new ArrayList<>();
+        lista.add(4.0);
+        lista.add(4.0);
+        lista.add(2.0);
+        lista.add(2.0);
+
         Muuttuja muuttuja = new Muuttuja("TestiMuuttuja", lista);
-        Yhden_otoksen_t_testi testi = new Yhden_otoksen_t_testi();
+        
+        double ka = muuttuja.Keskiarvo();
+
+        assertEquals(3.0, ka, 0.0);
     }
 
     @Test
-    public void laskeTestiSuureenArvo() {
+    public void otosVarianssi() {
         ArrayList<Double> lista = new ArrayList<>();
         lista.add(4.0);
         lista.add(4.0);
         lista.add(2.0);
         lista.add(2.0);
 
-        Yhden_otoksen_t_testi testi = new Yhden_otoksen_t_testi();
         Muuttuja muuttuja = new Muuttuja("TestiMuuttuja", lista);
-        testi.lisaaParametrit(muuttuja, 3.2);
-        double ts = testi.laskeTestisuureenArvo();
+        
+        double var = muuttuja.otosVarianssi();
 
-        assertEquals(ts, -0.34641014, 0.0000001);
+        assertEquals(var, 1.154700538, 1.0);
     }
+
+    @Test
+    public void kaKeskivirhe() {
+        ArrayList<Double> lista = new ArrayList<>();
+        lista.add(4.0);
+        lista.add(4.0);
+        lista.add(2.0);
+        lista.add(2.0);
+
+        Muuttuja muuttuja = new Muuttuja("MuuttujanNimi", lista);
+        double kv = muuttuja.kaKeskivirhe();
+
+        assertEquals(kv, 0.5773503, 0.0000001);
+    }
+
 }
