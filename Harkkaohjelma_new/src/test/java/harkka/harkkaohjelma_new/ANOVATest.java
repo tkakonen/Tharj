@@ -72,6 +72,8 @@ public class ANOVATest {
     public void tearDown() {
         System.out.println(muuttuja3.getArvot());
         anova.tulostaMuuttujat();
+        System.out.println(muuttuja3.getArvot().size());
+        System.out.println(anova.dfSisainenVaihtelu());
     }
 
     @Test
@@ -85,11 +87,57 @@ public class ANOVATest {
 
     @Test
     public void MSsis() {
+        double MS = anova.MSsisainenVaihtelu();
 
+        assertEquals(MS, 1.639, 0.01);
     }
 
     @Test
     public void MSval() {
-
+        double MS = anova.MSvalinenVaihtelu();
+        assertEquals(MS, 0.083, 0.01);
     }
+
+    @Test
+    public void kokonaisN() {
+        int N = anova.kokonaisN();
+
+        assertEquals(12, N);
+    }
+
+    @Test
+    public void dfValinenVaihtelu() {
+        int df = anova.dfValinenVaihtelu();
+
+        assertEquals(2, df);
+    }
+    
+    @Test
+    public void dfSisainenVaihtelu() {
+        int df = anova.dfSisainenVaihtelu();
+        
+        assertEquals(9, df);
+    }
+    
+    @Test
+    public void SSsis() {
+        double ss = anova.ryhmienSisainenVaihtelu();
+        
+        assertEquals(14.750, ss, 0.01);
+    }
+    
+    @Test
+    public void SSval() {
+        double ss = anova.ryhmienValinenVaihtelu();
+        
+        assertEquals(0.167, ss, 0.01);
+    }
+    
+    @Test
+    public void kokonaisKa() {
+        double kokKa = anova.laskeKokonaisKa();
+        
+        assertEquals(3.0833, kokKa, 0.001);
+    }
+    
 }

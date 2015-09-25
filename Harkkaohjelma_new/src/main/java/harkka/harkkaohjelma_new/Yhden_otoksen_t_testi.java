@@ -2,14 +2,11 @@ package harkka.harkkaohjelma_new;
 
 import java.util.ArrayList;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 /**
+ * Yhden otoksen t-testin avulla voi laskea testisuureen, jonka avulla voidaan päätellä eroaako tietyn muuttujan
+ * keskiarvo jostain ennalta asetetusta luvusta.
  *
- * @author DELL
  */
 public class Yhden_otoksen_t_testi {
 

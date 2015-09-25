@@ -8,8 +8,8 @@ package harkka.harkkaohjelma_new;
 import java.util.ArrayList;
 
 /**
- *
- * @author DELL
+ * Sisältää tietyn havaintoyksikön arvot. 
+ * 
  */
 public class Havaintoyksikko {
     

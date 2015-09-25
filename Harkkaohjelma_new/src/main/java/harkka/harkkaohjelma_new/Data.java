@@ -8,8 +8,9 @@ package harkka.harkkaohjelma_new;
 import java.util.ArrayList;
 
 /**
- *
- * @author DELL
+ * Data sisältää datataulukon.Pystysarakkeissa on tietyn muuttujan eri arvot, vaakariveillä havaintoyksikön
+ * arvot/mittaustulokset. 
+ * 
  */
 public class Data {
 

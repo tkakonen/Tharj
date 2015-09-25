@@ -3,19 +3,14 @@ package harkka.harkkaohjelma_new;
 
 import java.util.ArrayList;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 /**
- *
- * @author DELL
+ * Kahden otoksen t-testi tarjoaa metodin, joka laskee testisuureen jonka avulla
+ * voidaan päätellä, eroavatko kahden riippumattoman otoksen tietyn muuttujan keskiarvot
+ * toisistaan.
+ * 
  */
 public class Kahden_otoksen_t_testi {
-
-////// Tämä luokka vaatii vastuun siirtämistä Muuttuja-luokalle kuten luokassa Yhden_otoksen_t_testi,
- ///// samoin vastaavia muutoksia testiluokkaan.    
     
     private String testinnimi;
     private Muuttuja muuttuja1;

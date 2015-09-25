@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
- * @author DELL
+ * Otos sisältää metodin, jolla voi luoda uuden pienemmän datan, johon valitaan vain osa havaintoyksiköistä
+ * tietyn muuttujan arvojen perusteella. Esim. muuttujan sukupuoli avulla voidaan valita uuteen dataan vain naisten
+ * mittaustulokset. 
+ * 
  */
 public class Otos {
 

@@ -26,7 +26,7 @@ public class ANOVA {
         ArrayList<Double> SSgroups = new ArrayList<>();
         int i = 1;
         for (Muuttuja muuttuja : muuttujat) {
-            double SSmuuttuja = 1.0 * (muuttuja.getArvot().size() - 1);
+            double SSmuuttuja = 1.0 * (muuttuja.getArvot().size() - 1) * muuttuja.otosVarianssi();
             SSgroups.add(SSmuuttuja);
             i = 1 + 1;
         }
@@ -64,7 +64,7 @@ public class ANOVA {
     public double ryhmienValinenVaihtelu() {
         double summa = 0;
         for (Muuttuja muuttuja : muuttujat) {
-            double a = 1.0 * Math.pow(muuttuja.Keskiarvo() - this.laskeKokonaisKa(), 2) * muuttujat.size();
+            double a = 1.0 * Math.pow(muuttuja.Keskiarvo() - this.laskeKokonaisKa(), 2) * muuttuja.getArvot().size();
             summa = summa + a;
         }
         double SSryhmienValinenVaihtelu = summa;
@@ -72,7 +72,7 @@ public class ANOVA {
     }
 
     public int dfSisainenVaihtelu() {
-        int df = this.kokonaisN() - muuttujat.size();
+        int df = this.kokonaisN() - this.muuttujat.size();
         return df;
     }
 
@@ -87,10 +87,11 @@ public class ANOVA {
     }
 
     public double MSvalinenVaihtelu() {
-        double a = 1.0 * this.ryhmienValinenVaihtelu() / this.muuttujat.size() - 1;
+        double a = 1.0 * this.ryhmienValinenVaihtelu() / this.dfValinenVaihtelu();
         return a;
     }
 
+    
     public double laskeTestisuureenArvo() {
         double testisuure = 1.0 * this.MSvalinenVaihtelu() / this.MSsisainenVaihtelu();
         return testisuure;
@@ -101,5 +102,6 @@ public class ANOVA {
             System.out.println(muuttuja.getNimi());
         }
     }
+    
 
 }

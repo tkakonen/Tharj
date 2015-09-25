@@ -38,6 +38,8 @@ public class Main {
         System.out.println(lista);
         System.out.println(lista2);
         System.out.println(ts);
+        
+        
 
     }
 
