@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
- * @author DELL
+ * Muuttuja sisältää listana datataulukon pystysarakkeen arvot. Se tarjoaa
+ * metodit muuttujan arvojen perustunnuslukujen laskemiseen.
  */
 public class Muuttuja {
 
@@ -30,6 +30,11 @@ public class Muuttuja {
         }
     }
 
+    /**
+     * Metodi laskee muuttujan sisältämien arvojen keskiarvon.
+     *
+     * @return muuttujan arvojen keskiarvo
+     */
     public double Keskiarvo() {
         double ka = 0;
         double summa = 0;
@@ -42,6 +47,11 @@ public class Muuttuja {
         return ka;
     }
 
+    /**
+     * Metodi laskee muuttujan sisältämien arvojen otosvarianssin.
+     *
+     * @return muuttujan arvojen otosvarianssi
+     */
     public double otosVarianssi() {
         double ka = this.Keskiarvo();
         double neliosumma = 0;
@@ -52,6 +62,11 @@ public class Muuttuja {
         return varianssi;
     }
 
+    /**
+     * Metodi laskee muuttujan sisältämien arvojen keskiarvon keskivirheen.
+     *
+     * @return muuttujan arvojen keskiarvon keskivirhe
+     */
     public double kaKeskivirhe() {
         double var = this.otosVarianssi();
         int otoskoko = this.arvot.size();
@@ -60,10 +75,21 @@ public class Muuttuja {
         return keskiarvonKeskivirhe;
     }
 
+    /**
+     * Metodi palauttaa muuttujan arvot ArrayList- muodossa.
+     *
+     * @return muuttujan arvot listana
+     */
     public ArrayList<Double> getArvot() {
         return this.arvot;
     }
 
+    /**
+     * Metodi käy läpi muuttujan arvot ja laskee toisistaan poikkeavien arvojen
+     * lukumäärän.
+     *
+     * @return toisistaan poikkeavien muuttujan arvojen lukumäärä
+     */
     public ArrayList<Double> erilaisetArvot() {
         ArrayList<Double> erilaisetArvot = new ArrayList<>();
         for (Double arvo : this.getArvot()) {
@@ -72,6 +98,10 @@ public class Muuttuja {
             }
         }
         return erilaisetArvot;
+    }
+    
+    public String getNimi() {
+        return this.muuttujanNimi;
     }
 
 }

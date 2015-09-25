@@ -37,7 +37,8 @@ public class Kahden_otoksen_t_testiTest {
     @After
     public void tearDown() {
     }
-
+    
+  
     @Test
     public void laskeTestiSuureenArvo() {
         ArrayList<Double> lista = new ArrayList<>();
@@ -48,15 +49,17 @@ public class Kahden_otoksen_t_testiTest {
 
         ArrayList<Double> lista2 = new ArrayList<>();
 
-        lista.add(5.0);
-        lista.add(4.0);
-        lista.add(2.0);
-        lista.add(2.0);
+        lista2.add(5.0);
+        lista2.add(4.0);
+        lista2.add(2.0);
+        lista2.add(2.0);
 
-        Kahden_otoksen_t_testi testi = new Kahden_otoksen_t_testi(lista, lista2);
+        Muuttuja muuttuja1 = new Muuttuja("testimuuttuja1", lista);
+        Muuttuja muuttuja2 = new Muuttuja("testimuuttuja2", lista2);
+        Kahden_otoksen_t_testi testi = new Kahden_otoksen_t_testi(muuttuja1, muuttuja2);
         double ts = testi.laskeTestisuureenArvo();
 
-        assertEquals(0, 0);
+        assertEquals(ts, -0.264, 0.01);
     }
 
 }

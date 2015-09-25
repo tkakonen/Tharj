@@ -47,7 +47,7 @@ public class MuuttujaTest {
         lista.add(2.0);
 
         Muuttuja muuttuja = new Muuttuja("TestiMuuttuja", lista);
-        
+
         double ka = muuttuja.Keskiarvo();
 
         assertEquals(3.0, ka, 0.0);
@@ -62,10 +62,10 @@ public class MuuttujaTest {
         lista.add(2.0);
 
         Muuttuja muuttuja = new Muuttuja("TestiMuuttuja", lista);
-        
+
         double var = muuttuja.otosVarianssi();
 
-        assertEquals(var, 1.154700538, 1.0);
+        assertEquals(var, 1.33333333, 0.000001);
     }
 
     @Test
@@ -79,7 +79,21 @@ public class MuuttujaTest {
         Muuttuja muuttuja = new Muuttuja("MuuttujanNimi", lista);
         double kv = muuttuja.kaKeskivirhe();
 
-        assertEquals(kv, 0.5773503, 0.0000001);
+        assertEquals(kv, 0.57735, 0.00001);
+    }
+
+    @Test
+    public void getArvot() {
+        ArrayList<Double> lista = new ArrayList<>();
+        lista.add(4.0);
+        lista.add(4.0);
+        lista.add(2.0);
+        lista.add(2.0);
+        
+        Muuttuja muuttuja = new Muuttuja("Testimuuttuja", lista);
+        int arvojenMaara = muuttuja.getArvot().size();
+        
+        assertEquals(arvojenMaara, 4);
     }
 
 }

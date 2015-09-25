@@ -18,14 +18,14 @@ public class Kahden_otoksen_t_testi {
  ///// samoin vastaavia muutoksia testiluokkaan.    
     
     private String testinnimi;
-    private ArrayList<Double> otos1;
-    private ArrayList<Double> otos2;
+    private Muuttuja muuttuja1;
+    private Muuttuja muuttuja2;
     private Double kriittinen_p;
     private boolean kaksisuuntainen;
 
-    public Kahden_otoksen_t_testi(ArrayList<Double> otos1, ArrayList<Double> otos2) {
-        this.otos1 = otos1;
-        this.otos2 = otos2;
+    public Kahden_otoksen_t_testi(Muuttuja muuttuja1, Muuttuja muuttuja2) {
+        this.muuttuja1 = muuttuja1;
+        this.muuttuja2 = muuttuja2;
     }
 
     public void asetaParametrit(Double kriittinen_p, boolean kaksisuuntainen) {
@@ -41,70 +41,8 @@ public class Kahden_otoksen_t_testi {
         System.out.println("Muuttujat X1 ja X2 on normaalisti jakautuneita. Otokset 1 ja 2 ovat riippumattomia");
     }
 
-    //// Sori aivan kauheaa copypastekoodia, korjaan seuraavaan palautukseen.
-    
-    public double laskeKeskiarvo() {
-        double ka = 0;
-        double summa = 0;
-
-        for (Double arvo : otos1) {
-            summa = summa + arvo;
-            double keskiarvo = 1.0 * summa / otos1.size();
-            ka = keskiarvo;
-        }
-        return ka;
-    }
-
-    public double laskeKeskiarvo2() {
-        double ka = 0;
-        double summa = 0;
-
-        for (Double arvo : otos2) {
-            summa = summa + arvo;
-            double keskiarvo = 1.0 * summa / otos2.size();
-            ka = keskiarvo;
-        }
-        return ka;
-    }
-
-    public double laskeOtosVarianssi() {
-        double ka = laskeKeskiarvo();
-        double neliosumma = 0;
-        for (Double arvo : otos1) {
-            neliosumma = neliosumma + 1.0 * Math.pow(arvo - ka, 2);
-        }
-        double varianssi = 1.0 * neliosumma / (otos1.size() - 1);
-        return varianssi;
-    }
-    
-        public double laskeOtosVarianssi2() {
-        double ka = laskeKeskiarvo2();
-        double neliosumma = 0;
-        for (Double arvo : otos2) {
-            neliosumma = neliosumma + 1.0 * Math.pow(arvo - ka, 2);
-        }
-        double varianssi = 1.0 * neliosumma / (otos2.size() - 1);
-        return varianssi;
-    }
-
-    public double laskeKeskiarvonKeskivirhe() {
-        double var = laskeOtosVarianssi();
-        int otoskoko = otos1.size();
-
-        double keskiarvonKeskivirhe = 1.0 * Math.sqrt(1.0 * var / otoskoko);
-        return keskiarvonKeskivirhe;
-    }
-    
-        public double laskeKeskiarvonKeskivirhe2() {
-        double var = laskeOtosVarianssi2();
-        int otoskoko = otos2.size();
-
-        double keskiarvonKeskivirhe = 1.0 * Math.sqrt(1.0 * var / otoskoko);
-        return keskiarvonKeskivirhe;
-    }
-
     public double laskeTestisuureenArvo() {
-        double testisuure = 1.0 * (laskeKeskiarvo()- laskeKeskiarvo2())/Math.sqrt(laskeKeskiarvonKeskivirhe()+laskeKeskiarvonKeskivirhe2());
+        double testisuure = 1.0 * (muuttuja1.Keskiarvo()- muuttuja2.Keskiarvo())/Math.sqrt(muuttuja1.kaKeskivirhe() + muuttuja2.kaKeskivirhe());
        
         return testisuure;
     }
@@ -114,7 +52,7 @@ public class Kahden_otoksen_t_testi {
     }
 
     public int laskeVapausasteet() {
-        int df = otos1.size() - 1;
+        int df = muuttuja1.getArvot().size() - 1;
         return df;
     }
 
