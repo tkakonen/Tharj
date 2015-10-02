@@ -5,6 +5,8 @@
  */
 package harkka.harkkaohjelma_new;
 
+import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
+import harkka.harkkaohjelma_new.kayttoliittyma.Kayttoliittyma;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TyhjaMuuttujaException {
 
         ArrayList<Double> lista = new ArrayList<>();
         lista.add(4.0);
@@ -39,6 +41,9 @@ public class Main {
         System.out.println(lista2);
         System.out.println(ts);
         
+        Kayttoliittyma kayttis = new Kayttoliittyma();
+        kayttis.run();
+       
         
 
     }

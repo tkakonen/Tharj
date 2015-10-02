@@ -44,11 +44,13 @@
                         <param>harkka.harkkaohjelma_new.Kahden_otoksen_t_testi*</param>
                         <param>harkka.harkkaohjelma_new.Yhden_otoksen_t_testi*</param>
                         <param>harkka.harkkaohjelma_new.Muuttuja*</param>
+                        <param>harkka.harkkaohjelma_new.ANOVA*</param>
                     </targetClasses>
                     <targetTests>
                         <param>harkka.harkkaohjelma_new.Kahden_otoksen_t_testiTest*</param>
                         <param>harkka.harkkaohjelma_new.Yhden_otoksen_t_testiTest*</param>
                         <param>harkka.harkkaohjelma_new.MuuttujaTest*</param>
+                        <param>harkka.harkkaohjelma_new.ANOVATest*</param>
                     </targetTests>
                 </configuration>
             </plugin>
