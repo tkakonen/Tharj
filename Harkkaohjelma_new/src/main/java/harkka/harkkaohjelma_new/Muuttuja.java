@@ -16,6 +16,7 @@ public class Muuttuja {
 
     private String muuttujanNimi;
     private ArrayList<Double> arvot;
+    private Data data;
 
     public Muuttuja(String muuttujanNimi, ArrayList<Double> arvot) {
         this.muuttujanNimi = muuttujanNimi;
@@ -99,9 +100,29 @@ public class Muuttuja {
         }
         return erilaisetArvot;
     }
-    
+
     public String getNimi() {
         return this.muuttujanNimi;
     }
 
+    public ArrayList<Muuttuja> ryhmittele(String muuttujanNimi, ArrayList<Double> arvot) {
+        Muuttuja ryhmittelevaMuuttuja = this.data.getMuuttuja(muuttujanNimi);
+        ArrayList<Muuttuja> ryhmitellytMuuttujat = new ArrayList<>();
+        for (Double arvo : arvot) {
+            ArrayList<Double> lista = new ArrayList<>();
+            ArrayList<Integer> indeksit = new ArrayList<>();
+            for (Double value : ryhmittelevaMuuttuja.getArvot()) {
+                if (value.equals(arvo)) {
+                    indeksit.add(ryhmittelevaMuuttuja.getArvot().indexOf(value));
+                }
+                for (int index : indeksit) {
+                    lista.add(this.arvot.get(index));
+                }
+
+            }
+            Muuttuja muuttuja = new Muuttuja("arvo", lista);
+            ryhmitellytMuuttujat.add(muuttuja);
+        }
+        return ryhmitellytMuuttujat;
+    }
 }

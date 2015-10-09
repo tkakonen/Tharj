@@ -8,47 +8,60 @@ package harkka.harkkaohjelma_new;
 import java.util.ArrayList;
 
 /**
- * Data sisältää datataulukon.Pystysarakkeissa on tietyn muuttujan eri arvot, vaakariveillä havaintoyksikön
- * arvot/mittaustulokset. 
- * 
+ * Data sisältää datataulukon.Pystysarakkeissa on tietyn muuttujan eri arvot,
+ * vaakariveillä havaintoyksikön arvot/mittaustulokset.
+ *
  */
 public class Data {
 
     private Double[][] datataulukko;
     private ArrayList<String> muuttujalista;
     private ArrayList<String> henkilot;
-    
+
     public Data() {
-        
+
     }
 
     public Data(Double[][] datataulukko, ArrayList<String> muuttujalista) {
         this.datataulukko = datataulukko;
         this.muuttujalista = muuttujalista;
     }
-    
-    public void tulostaData(){
+
+    public void tulostaData() {
         System.out.println(muuttujalista);
         System.out.println(datataulukko);
     }
-    
+
     public Double[][] getData() {
         return this.datataulukko;
     }
-    
+
     public ArrayList<String> getMuuttujanNimet() {
         return this.muuttujalista;
     }
-    
+
     public ArrayList<String> getHenkilot() {
         return this.henkilot;
     }
-    
+
     public void setMuuttujaLista(ArrayList<String> muuttujalista) {
         this.muuttujalista = muuttujalista;
     }
-   
-    
-    
+
+    public Muuttuja getMuuttuja(String nimi) {
+        ArrayList<Double> arvot= new ArrayList<>();
+        int sijainti = this.muuttujalista.indexOf(nimi);
+        int a = this.henkilot.size();
+        for (int i = 0; i < a; i++ ) {
+            arvot.add(this.getData()[sijainti][i]);
+        }
+        Muuttuja muuttuja = new Muuttuja(nimi, arvot);
+        return muuttuja;
+    }
+
+    public Muuttuja getMuuttuja(int jarjestysNro) {
+
+        return null;
+    }
 
 }

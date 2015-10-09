@@ -16,6 +16,11 @@ import java.util.ArrayList;
 public class ANOVA {
 
     private ArrayList<Muuttuja> muuttujat;
+    private Data data;
+    
+    public ANOVA(String muuttujanNimi, String ryhmittelevanMuuttujanNimi, ArrayList arvot) {
+        this.muuttujat = data.getMuuttuja(muuttujanNimi).ryhmittele(ryhmittelevanMuuttujanNimi, arvot);
+    }
 
     public ANOVA(ArrayList<Muuttuja> muuttujat) {
         this.muuttujat = muuttujat;

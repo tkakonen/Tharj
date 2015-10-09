@@ -66,6 +66,7 @@ public class Kahden_otoksen_t_testi {
     }
 
     public double laskeP_arvoTestisuureelle() {
+        
         return 0;
 
     }

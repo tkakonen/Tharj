@@ -7,6 +7,7 @@ package harkka.harkkaohjelma_new.kayttoliittyma;
 
 import harkka.harkkaohjelma_new.Kahden_otoksen_t_testi;
 import harkka.harkkaohjelma_new.Yhden_otoksen_t_testi;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.io.File;
@@ -17,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.WindowConstants;
 
@@ -27,14 +29,15 @@ import javax.swing.WindowConstants;
 public class Kayttoliittyma implements Runnable {
 
     private JFrame frame;
+    private KlikkaustenKuuntelija listen;
 
     public Kayttoliittyma() {
-
+        this.listen = new KlikkaustenKuuntelija(this);
     }
 
     @Override
     public void run() {
-
+        this.kaynnistaGraafinenKayttoliittyma();
     }
 
     public void tulostaPaavalikko() {
@@ -74,6 +77,10 @@ public class Kayttoliittyma implements Runnable {
         ButtonGroup buttonGroup2 = new ButtonGroup();
         JButton valitse = new JButton("Valitse");
         buttonGroup2.add(valitse);
+        listen.setButtonValitse(valitse);
+
+        valitse.addActionListener(listen);
+
         container.add(valitse);
 
     }
@@ -82,23 +89,72 @@ public class Kayttoliittyma implements Runnable {
         return frame;
     }
 
-    public void kaynnistaGraafinenKayttoliittyma() {
-
+    public void setFrame() {
         frame = new JFrame("Ikkuna");
         frame.setPreferredSize(new Dimension(700, 500));
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
 
+    public void kaynnistaGraafinenKayttoliittyma() {
+        this.setFrame();
         luoKomponentit(frame.getContentPane());
 
         frame.pack();
         frame.setVisible(true); // Luo sovelluksesi tänne
     }
 
+    public void tyhjaRuutu() {
+
+        this.frame.setBackground(Color.white);
+        Container container = this.frame.getContentPane();
+        container.removeAll();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        container.add(new JLabel("VALITSE ANALYYSI:"));
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        JRadioButton lue = new JRadioButton("Perutunnusluvut");
+        buttonGroup.add(lue);
+        container.add(lue);
+        JRadioButton syota = new JRadioButton("Yhden otoksen t-testi");
+        buttonGroup.add(syota);
+        container.add(syota);
+        JRadioButton explore = new JRadioButton("Kahden otoksen t-testi");
+        buttonGroup.add(explore);
+        container.add(explore);
+        JRadioButton analysoi = new JRadioButton("Varianssianalyysi");
+        buttonGroup.add(analysoi);
+        container.add(analysoi);
+        JRadioButton lopeta = new JRadioButton("Lopeta");
+        buttonGroup.add(lopeta);
+        container.add(lopeta);
+
+        ButtonGroup buttonGroup2 = new ButtonGroup();
+        JButton valitse2 = new JButton("Valitse");
+        buttonGroup2.add(valitse2);
+
+        listen.setButtonValitse2(valitse2);
+        valitse2.addActionListener(listen);
+        this.frame.repaint();
+        container.add(valitse2);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void t_testaa() {
+        this.frame.setBackground(Color.white);
+        Container container = this.frame.getContentPane();
+        container.removeAll();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        container.add(new JLabel("Yhden otoksen t-testi:"));
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     public void kaynnistaTekstiKayttoliittyma() {
-        
-        ////Tässä hyvin alustavaa hahmotelmaa ohjelman käyttöliittymän rakenteista.
-        
         System.out.println("Tervetuloa");
         this.tulostaPaavalikko();
         Scanner lukija = new Scanner(System.in);
