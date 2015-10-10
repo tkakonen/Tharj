@@ -36,7 +36,13 @@ public class KlikkaustenKuuntelija implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == valitse) {
-            this.kayttis.tyhjaRuutu();
+            if (this.kayttis.getValinnanNro() == 2) {
+                this.kayttis.syotaData();
+            } else if (this.kayttis.getValinnanNro() == 3) {
+                this.kayttis.tyhjaRuutu();
+            } else {
+                
+            }
         } else if (ae.getSource() == valitse2) {
             this.kayttis.t_testaa();
             System.out.println("aaaaaa");

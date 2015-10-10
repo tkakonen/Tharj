@@ -17,6 +17,7 @@ public class Data {
     private Double[][] datataulukko;
     private ArrayList<String> muuttujalista;
     private ArrayList<String> henkilot;
+    private String name;
 
     public Data() {
 
@@ -62,6 +63,14 @@ public class Data {
     public Muuttuja getMuuttuja(int jarjestysNro) {
 
         return null;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return this.name;
     }
 
 }
