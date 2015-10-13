@@ -47,7 +47,31 @@ public class ValintaKuuntelija implements ItemListener {
             } else if (name.equals("lopeta")) {
                 System.out.println("papapaa");
                 this.kayttis.setValinnanNro(5);
+                
+            } else if (name.equals("perus")) {
+                System.out.println("papapaa");
+                this.kayttis.setValinnanNro(1);
+            } else if (name.equals("ttest1")) {
+                System.out.println("papapaa");
+                this.kayttis.setValinnanNro(2);
+            } else if (name.equals("ttest2")) {
+                System.out.println("papapaa");
+                this.kayttis.setValinnanNro(3);
+            } else if (name.equals("anova")) {
+                System.out.println("papapaa");
+                this.kayttis.setValinnanNro(4);
+            } else if (name.equals("lopeta")) {
+                System.out.println("papapaa");
+                this.kayttis.setValinnanNro(5);
+            } else {
+            for (String nimi: this.kayttis.getData().getMuuttujanNimet()) {
+                if (name.equals(nimi)) {
+                    this.kayttis.setMuuttujanNimi(nimi);
             }
+            }
+                    
+                    }
+
         } else if (e.getStateChange() == ItemEvent.DESELECTED) {
             // Your deselected code here.
         }

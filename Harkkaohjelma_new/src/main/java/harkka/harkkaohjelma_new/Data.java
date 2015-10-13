@@ -53,7 +53,8 @@ public class Data {
         ArrayList<Double> arvot= new ArrayList<>();
         int sijainti = this.muuttujalista.indexOf(nimi);
         int a = this.henkilot.size();
-        for (int i = 0; i < a; i++ ) {
+        System.out.println(this.henkilot.size());
+        for (int i = 0; i < (a-1); i++ ) {
             arvot.add(this.getData()[sijainti][i]);
         }
         Muuttuja muuttuja = new Muuttuja(nimi, arvot);
@@ -72,5 +73,13 @@ public class Data {
     public String getName() {
         return this.name;
     }
+    
+    public void setData(Double[][] taulukko) {
+        this.datataulukko = taulukko;
+    }
+    
+    public void setHenkilot(ArrayList<String> henkilot) {
+        this.henkilot = henkilot;
+    } 
 
 }
