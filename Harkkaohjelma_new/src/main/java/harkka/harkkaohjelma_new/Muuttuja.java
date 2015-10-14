@@ -75,6 +75,10 @@ public class Muuttuja {
         double keskiarvonKeskivirhe = 1.0 * Math.sqrt(1.0 * var / otoskoko);
         return keskiarvonKeskivirhe;
     }
+    
+    public void setData(Data data) {
+        this.data = data;
+    }
 
     /**
      * Metodi palauttaa muuttujan arvot ArrayList- muodossa.

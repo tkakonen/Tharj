@@ -58,6 +58,7 @@ public class Data {
             arvot.add(this.getData()[sijainti][i]);
         }
         Muuttuja muuttuja = new Muuttuja(nimi, arvot);
+        muuttuja.setData(this);
         return muuttuja;
     }
 

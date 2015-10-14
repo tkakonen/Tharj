@@ -47,7 +47,7 @@ public class ValintaKuuntelija implements ItemListener {
             } else if (name.equals("lopeta")) {
                 System.out.println("papapaa");
                 this.kayttis.setValinnanNro(5);
-                
+
             } else if (name.equals("perus")) {
                 System.out.println("papapaa");
                 this.kayttis.setValinnanNro(1);
@@ -64,17 +64,22 @@ public class ValintaKuuntelija implements ItemListener {
                 System.out.println("papapaa");
                 this.kayttis.setValinnanNro(5);
             } else {
-            for (String nimi: this.kayttis.getData().getMuuttujanNimet()) {
-                if (name.equals(nimi)) {
-                    this.kayttis.setMuuttujanNimi(nimi);
-            }
-            }
-                    
+                for (String nimi : this.kayttis.getData().getMuuttujanNimet()) {
+                    if (name.equals(nimi)) {
+                        this.kayttis.setMuuttujanNimi(nimi);
+                    }
+                }
+                for (String nimi : this.kayttis.getData().getMuuttujanNimet()) {
+                    if (name.equals(nimi + "2")) {
+                        this.kayttis.setRyhmMuuttujanNimi(nimi);
                     }
 
-        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                }
+            }
+
+            }else if (e.getStateChange() == ItemEvent.DESELECTED) {
             // Your deselected code here.
         }
-    }
+        }
 
-}
+    }

@@ -6,12 +6,15 @@
 package harkka.harkkaohjelma_new.kayttoliittyma;
 
 import harkka.harkkaohjelma_new.Data;
+import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
 import java.awt.Container;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -32,6 +35,7 @@ public class KlikkaustenKuuntelija implements ActionListener {
     private JButton palaa;
     private JButton tunnarit;
     private JTextField myy;
+    private JButton ts;
 
     public KlikkaustenKuuntelija(Kayttoliittyma kayttis) {
         this.kayttis = kayttis;
@@ -64,13 +68,17 @@ public class KlikkaustenKuuntelija implements ActionListener {
     public void setPalaa(JButton palaa) {
         this.palaa = palaa;
     }
-    
+
     public void setTunnarit(JButton tunnarit) {
         this.tunnarit = tunnarit;
     }
-    
+
     public void setTextFieldMyy(JTextField myy) {
         this.myy = myy;
+    }
+
+    public void setTs(JButton ts) {
+        this.ts = ts;
     }
 
     @Override
@@ -137,13 +145,13 @@ public class KlikkaustenKuuntelija implements ActionListener {
             System.out.println(muuttujalista.size());
             System.out.println(havaintoja);
             System.out.println("pöööö");
-            
+
             ArrayList<String> henkilot = new ArrayList<>();
-            for (int h=0;  h<=havaintoja; h++) {
+            for (int h = 0; h <= havaintoja; h++) {
                 henkilot.add("Kh" + h);
             }
             this.kayttis.getData().setHenkilot(henkilot);
-            
+
             int i = 0;
             int j = 0;
             for (Double luku : nonNanhavaintolista) {
@@ -168,8 +176,23 @@ public class KlikkaustenKuuntelija implements ActionListener {
         } else if (ae.getSource() == palaa) {
             System.out.println("aabbbccc");
             this.kayttis.tulostaPaavalikko();
-        }  else if (ae.getSource() == tunnarit) {
+        } else if (ae.getSource() == tunnarit) {
             this.kayttis.tulostaTunnarit();
+        } else if (ae.getSource() == ts) {
+            if (this.kayttis.getValinnanNro() == 2) {
+                Double myynolla = Double.parseDouble(this.myy.getText());
+                this.myy.setText("");
+                this.kayttis.setMyy(myynolla);
+                this.kayttis.tTestitulos();
+            } if (this.kayttis.getValinnanNro() == 3) {
+                try {
+                    this.kayttis.Ttestitulos2();
+                } catch (TyhjaMuuttujaException ex) {
+                    Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                this.kayttis.anovaTulos();
+            }
         }
     }
 }
