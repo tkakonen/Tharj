@@ -7,12 +7,15 @@ package harkka.harkkaohjelma_new.kayttoliittyma;
 
 import harkka.harkkaohjelma_new.Data;
 import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
+import harkka.harkkaohjelma_new.reader.TiedostonLukija;
 import java.awt.Container;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -36,6 +39,8 @@ public class KlikkaustenKuuntelija implements ActionListener {
     private JButton tunnarit;
     private JTextField myy;
     private JButton ts;
+    private JButton lueData;
+    private JTextField filename;
 
     public KlikkaustenKuuntelija(Kayttoliittyma kayttis) {
         this.kayttis = kayttis;
@@ -81,10 +86,20 @@ public class KlikkaustenKuuntelija implements ActionListener {
         this.ts = ts;
     }
 
+    public void setLueData(JButton lue) {
+        this.lueData = lue;
+    }
+    
+    public void setFileName(JTextField filename) {
+        this.filename = filename;
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == valitse) {
-            if (this.kayttis.getValinnanNro() == 2) {
+            if (this.kayttis.getValinnanNro() == 1) {
+                this.kayttis.lueData();
+            } else if (this.kayttis.getValinnanNro() == 2) {
                 this.kayttis.syotaData();
             } else if (this.kayttis.getValinnanNro() == 3) {
                 this.kayttis.analysoi();
@@ -178,13 +193,51 @@ public class KlikkaustenKuuntelija implements ActionListener {
             this.kayttis.tulostaPaavalikko();
         } else if (ae.getSource() == tunnarit) {
             this.kayttis.tulostaTunnarit();
+        } else if (ae.getSource() == lueData) {
+            this.kayttis.setTiedostonNimi(filename.getText());
+            TiedostonLukija lukija = new TiedostonLukija();
+            HashMap<String, ArrayList<Double>> datalistat = new HashMap<>();
+            try {
+                System.out.println(filename.getText());
+                datalistat = lukija.lue(filename.getText());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ArrayList<String> muuttujanNimet = new ArrayList<>();
+            for (String nimi : datalistat.keySet()) {
+                muuttujanNimet.add(nimi);
+            }
+            Data data = new Data();
+            this.kayttis.setData(data);
+            this.kayttis.getData().setMuuttujaLista(muuttujanNimet);
+            
+            Double[][] datataulukko = new Double[muuttujanNimet.size()][datalistat.get(muuttujanNimet.get(1)).size()];
+            for (String nimi : datalistat.keySet()) {
+                for (int i = 0; i < datalistat.get(muuttujanNimet.get(1)).size(); i++) {
+                    datataulukko[muuttujanNimet.indexOf(nimi)][i] = datalistat.get(nimi).get(i);
+                }
+                this.kayttis.getData().setData(datataulukko);
+            }
+            
+            ArrayList<String> henkilot = new ArrayList<>();
+            for (int h = 0; h <= datalistat.get(muuttujanNimet.get(1)).size(); h++) {
+                henkilot.add("Kh" + h);
+            }
+            this.kayttis.getData().setHenkilot(henkilot);
+            
+            
+            
+            
+            this.kayttis.dataTallennettu();
+
         } else if (ae.getSource() == ts) {
             if (this.kayttis.getValinnanNro() == 2) {
                 Double myynolla = Double.parseDouble(this.myy.getText());
                 this.myy.setText("");
                 this.kayttis.setMyy(myynolla);
                 this.kayttis.tTestitulos();
-            } if (this.kayttis.getValinnanNro() == 3) {
+            }
+            if (this.kayttis.getValinnanNro() == 3) {
                 try {
                     this.kayttis.Ttestitulos2();
                 } catch (TyhjaMuuttujaException ex) {

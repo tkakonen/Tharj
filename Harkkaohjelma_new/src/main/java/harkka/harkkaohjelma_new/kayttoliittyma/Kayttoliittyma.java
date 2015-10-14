@@ -11,6 +11,7 @@ import harkka.harkkaohjelma_new.Kahden_otoksen_t_testi;
 import harkka.harkkaohjelma_new.Muuttuja;
 import harkka.harkkaohjelma_new.Yhden_otoksen_t_testi;
 import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
+import harkka.harkkaohjelma_new.reader.TiedostonLukija;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -50,6 +51,8 @@ public class Kayttoliittyma implements Runnable {
     private String muuttujanNimi;
     private Double myy;
     private String ryhmMuuttujanNimi;
+    private TiedostonLukija fileReader;
+    private String tiedostonNimi;
 
     public Kayttoliittyma() {
         this.listen = new KlikkaustenKuuntelija(this);
@@ -66,6 +69,10 @@ public class Kayttoliittyma implements Runnable {
 
     public void setRyhmMuuttujanNimi(String nimi) {
         this.ryhmMuuttujanNimi = nimi;
+    }
+    
+    public void setTiedostonNimi(String nimi) {
+        this.tiedostonNimi = nimi;
     }
 
     @Override
@@ -425,7 +432,7 @@ public class Kayttoliittyma implements Runnable {
         System.out.println(this.ryhmMuuttujanNimi);
         System.out.println(this.data.getMuuttuja(this.ryhmMuuttujanNimi).getArvot());
         System.out.println(erilaiset);
-        
+
         ArrayList ryhmat = this.data.getMuuttuja(muuttujanNimi).ryhmittele(this.ryhmMuuttujanNimi, erilaiset);
         ANOVA anova = new ANOVA(ryhmat);
 
@@ -598,6 +605,11 @@ public class Kayttoliittyma implements Runnable {
         BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
         container.setLayout(layout);
         container.add(new JLabel("Muuttujan '" + this.getMuuttujanNimi() + "' perustunnusluvut:"));
+        System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
+        System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
+        System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
+        System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
+        
         container.add(new JLabel("Keskiarvo: " + this.data.getMuuttuja(muuttujanNimi).Keskiarvo()));
         container.add(new JLabel("Otosvarianssi: " + this.data.getMuuttuja(muuttujanNimi).otosVarianssi()));
 
@@ -639,4 +651,37 @@ public class Kayttoliittyma implements Runnable {
         frame.pack();
         frame.setVisible(true);
     }
+
+    public void lueData() {
+        this.frame.setBackground(Color.white);
+        Container container = this.frame.getContentPane();
+        container.removeAll();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        container.add(new JLabel("Luettavan tiedoston nimi: "));
+
+        JTextField filename = new JTextField("");
+        filename.setMaximumSize(
+                new Dimension(Integer.MAX_VALUE, filename.getPreferredSize().height));
+        container.add(filename);
+        filename.addActionListener(listen);
+        listen.setFileName(filename);
+        
+        JButton lueData = new JButton("Lue tiedosto");
+        lueData.addActionListener(listen);
+        listen.setLueData(lueData);
+        container.add(lueData);
+        
+        
+        
+        JButton palaa = new JButton("Palaa päävalikkoon");
+        container.add(palaa);
+        palaa.addActionListener(listen);
+        listen.setPalaa(palaa);
+
+        this.frame.repaint();
+        frame.pack();
+        frame.setVisible(true);
+    }
+
 }
