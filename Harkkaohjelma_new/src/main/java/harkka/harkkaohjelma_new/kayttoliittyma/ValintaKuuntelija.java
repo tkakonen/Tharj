@@ -33,35 +33,25 @@ public class ValintaKuuntelija implements ItemListener {
             JRadioButton check = (JRadioButton) e.getSource();
             String name = check.getName();
             if (name.equals("lue")) {
-                System.out.println("pööö");
                 this.kayttis.setValinnanNro(1);
             } else if (name.equals("syota")) {
-                System.out.println("koo");
                 this.kayttis.setValinnanNro(2);
             } else if (name.equals("analysoi")) {
-                System.out.println("joo");
                 this.kayttis.setValinnanNro(3);
             } else if (name.equals("explore")) {
-                System.out.println("ahaa");
                 this.kayttis.setValinnanNro(4);
             } else if (name.equals("lopeta")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(5);
 
             } else if (name.equals("perus")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(1);
             } else if (name.equals("ttest1")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(2);
             } else if (name.equals("ttest2")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(3);
             } else if (name.equals("anova")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(4);
             } else if (name.equals("lopeta")) {
-                System.out.println("papapaa");
                 this.kayttis.setValinnanNro(5);
             } else {
                 for (String nimi : this.kayttis.getData().getMuuttujanNimet()) {

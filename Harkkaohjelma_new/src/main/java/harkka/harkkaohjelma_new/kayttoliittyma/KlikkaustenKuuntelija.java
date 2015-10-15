@@ -189,7 +189,6 @@ public class KlikkaustenKuuntelija implements ActionListener {
 
             this.kayttis.dataTallennettu();
         } else if (ae.getSource() == palaa) {
-            System.out.println("aabbbccc");
             this.kayttis.tulostaPaavalikko();
         } else if (ae.getSource() == tunnarit) {
             this.kayttis.tulostaTunnarit();
@@ -243,7 +242,7 @@ public class KlikkaustenKuuntelija implements ActionListener {
                 } catch (TyhjaMuuttujaException ex) {
                     Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else {
+            } else if (this.kayttis.getValinnanNro() == 4) {
                 this.kayttis.anovaTulos();
             }
         }

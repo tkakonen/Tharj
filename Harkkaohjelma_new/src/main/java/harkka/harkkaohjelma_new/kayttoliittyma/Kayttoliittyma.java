@@ -70,7 +70,7 @@ public class Kayttoliittyma implements Runnable {
     public void setRyhmMuuttujanNimi(String nimi) {
         this.ryhmMuuttujanNimi = nimi;
     }
-    
+
     public void setTiedostonNimi(String nimi) {
         this.tiedostonNimi = nimi;
     }
@@ -134,9 +134,7 @@ public class Kayttoliittyma implements Runnable {
             container.add(new JLabel("Käytössäsi on data '" + this.data.getName() + "'"));
         }
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
 
     }
 
@@ -235,9 +233,7 @@ public class Kayttoliittyma implements Runnable {
         container.add(this.havainnotTallenna());
         container.add(this.luoValikko(), BorderLayout.SOUTH);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
 
     }
 
@@ -287,10 +283,7 @@ public class Kayttoliittyma implements Runnable {
         JButton palaa = new JButton("Palaa päävalikkoon");
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-        container.add(palaa);
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
     }
 
     public Data getData() {
@@ -335,9 +328,7 @@ public class Kayttoliittyma implements Runnable {
             container.add(palaa);
             palaa.addActionListener(listen);
             listen.setPalaa(palaa);
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.asetaIkkuna();
         } else {
             container.add(new JLabel("Valitse muuttuja, jonka perustunnusluvut haluat tulostaa:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
@@ -361,9 +352,8 @@ public class Kayttoliittyma implements Runnable {
             palaa.addActionListener(listen);
             listen.setPalaa(palaa);
 
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.asetaIkkuna();
+
         }
     }
 
@@ -413,9 +403,7 @@ public class Kayttoliittyma implements Runnable {
             ts.addActionListener(listen);
             container.add(ts);
 
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.asetaIkkuna();
         }
     }
 
@@ -447,9 +435,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
     }
 
     public void t_testaa() {
@@ -464,9 +450,7 @@ public class Kayttoliittyma implements Runnable {
             container.add(palaa);
             palaa.addActionListener(listen);
             listen.setPalaa(palaa);
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.asetaIkkuna();
         } else {
             container.add(new JLabel("Yhden otoksen t-testi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
@@ -502,9 +486,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
     }
 
     public void ttestaa2() {
@@ -519,9 +501,7 @@ public class Kayttoliittyma implements Runnable {
             container.add(palaa);
             palaa.addActionListener(listen);
             listen.setPalaa(palaa);
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.asetaIkkuna();
         } else {
             container.add(new JLabel("Yhden otoksen t-testi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
@@ -560,9 +540,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
     }
 
     public void lopeta() {
@@ -592,9 +570,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
 
     }
 
@@ -609,7 +585,7 @@ public class Kayttoliittyma implements Runnable {
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
-        
+
         container.add(new JLabel("Keskiarvo: " + this.data.getMuuttuja(muuttujanNimi).Keskiarvo()));
         container.add(new JLabel("Otosvarianssi: " + this.data.getMuuttuja(muuttujanNimi).otosVarianssi()));
 
@@ -618,9 +594,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
 
     }
 
@@ -647,9 +621,7 @@ public class Kayttoliittyma implements Runnable {
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
-        this.frame.repaint();
-        frame.pack();
-        frame.setVisible(true);
+        this.asetaIkkuna();
     }
 
     public void lueData() {
@@ -666,19 +638,21 @@ public class Kayttoliittyma implements Runnable {
         container.add(filename);
         filename.addActionListener(listen);
         listen.setFileName(filename);
-        
+
         JButton lueData = new JButton("Lue tiedosto");
         lueData.addActionListener(listen);
         listen.setLueData(lueData);
         container.add(lueData);
-        
-        
-        
+
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
 
+        this.asetaIkkuna();
+    }
+
+    public void asetaIkkuna() {
         this.frame.repaint();
         frame.pack();
         frame.setVisible(true);
