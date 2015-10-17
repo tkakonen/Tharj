@@ -75,7 +75,7 @@ public class Muuttuja {
         double keskiarvonKeskivirhe = 1.0 * Math.sqrt(1.0 * var / otoskoko);
         return keskiarvonKeskivirhe;
     }
-    
+
     public void setData(Data data) {
         this.data = data;
     }
@@ -112,19 +112,23 @@ public class Muuttuja {
     public ArrayList<Muuttuja> ryhmittele(String muuttujanNimi, ArrayList<Double> arvot) {
         Muuttuja ryhmittelevaMuuttuja = this.data.getMuuttuja(muuttujanNimi);
         ArrayList<Muuttuja> ryhmitellytMuuttujat = new ArrayList<>();
+        
         for (Double arvo : arvot) {
             ArrayList<Double> lista = new ArrayList<>();
             ArrayList<Integer> indeksit = new ArrayList<>();
+            int sijainti = 0;
             for (Double value : ryhmittelevaMuuttuja.getArvot()) {
                 if (value.equals(arvo)) {
-                    indeksit.add(ryhmittelevaMuuttuja.getArvot().indexOf(value));
+                    indeksit.add(sijainti);
                 }
-                for (int index : indeksit) {
-                    lista.add(this.arvot.get(index));
-                }
-
+                sijainti = sijainti + 1;
+                
             }
-            Muuttuja muuttuja = new Muuttuja("arvo", lista);
+            for (int index : indeksit) {
+                lista.add(this.arvot.get(index));
+            }
+            String uudenMuuttujanNimi = "Group" + arvo;
+            Muuttuja muuttuja = new Muuttuja(uudenMuuttujanNimi, lista);
             ryhmitellytMuuttujat.add(muuttuja);
         }
         return ryhmitellytMuuttujat;

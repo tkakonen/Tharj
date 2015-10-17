@@ -140,4 +140,9 @@ public class ANOVATest {
         assertEquals(3.0833, kokKa, 0.001);
     }
     
+    public void p_arvo() {
+        double p = anova.laskeP_arvo();
+        assertEquals(0.951, p, 0.01);
+    }
+    
 }

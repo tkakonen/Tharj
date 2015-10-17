@@ -2,6 +2,7 @@ package harkka.harkkaohjelma_new;
 
 import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
 import java.util.ArrayList;
+import org.apache.commons.math3.distribution.TDistribution;
 
 /**
  * Kahden otoksen t-testi tarjoaa metodin, joka laskee testisuureen jonka avulla
@@ -59,17 +60,18 @@ public class Kahden_otoksen_t_testi {
         return df;
     }
 
-    //////Tässä kohtaa tarvitsisin t-jakaumasta saatavia arvoja.
-    //////TDistribution jakauma = new TDistribution(laskeVapausasteet()).
-    public void luoJakauma() {
 
+    public double laskeP_arvoTestisuureelle_yksisuuntainen() throws TyhjaMuuttujaException {
+        TDistribution T = new TDistribution(this.laskeVapausasteet());
+        double p = T.cumulativeProbability(this.laskeTestisuureenArvo());
+        return p;
     }
-
-    public double laskeP_arvoTestisuureelle() {
-        
-        return 0;
-
+    
+    public double laskeP_arvoTestisuureelle_kaksisuuntainen() throws TyhjaMuuttujaException {
+        double p = this.laskeP_arvoTestisuureelle_yksisuuntainen();
+        return p;
     }
+    
 
     public Muuttuja getMuuttuja1() {
         return this.muuttuja1;

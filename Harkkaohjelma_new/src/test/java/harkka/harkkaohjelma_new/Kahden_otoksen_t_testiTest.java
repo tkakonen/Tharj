@@ -85,5 +85,16 @@ public class Kahden_otoksen_t_testiTest {
         
         testi.laskeTestisuureenArvo();
     }
+    
+    @Test
+    public void laske_yksisuuntainen_p() throws TyhjaMuuttujaException {
+        double p = testi.laskeP_arvoTestisuureelle_yksisuuntainen();
+        assertEquals(p, 0.4005, 0.001);
+    }
+    
+    public void laske_kaksisuuntainen_p() throws TyhjaMuuttujaException {
+        double p = testi.laskeP_arvoTestisuureelle_kaksisuuntainen();
+        assertEquals(p, 0.801, 0.01);
+    }
 
 }

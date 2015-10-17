@@ -89,7 +89,7 @@ public class KlikkaustenKuuntelija implements ActionListener {
     public void setLueData(JButton lue) {
         this.lueData = lue;
     }
-    
+
     public void setFileName(JTextField filename) {
         this.filename = filename;
     }
@@ -139,13 +139,26 @@ public class KlikkaustenKuuntelija implements ActionListener {
 
             ArrayList<Double> havaintolista = new ArrayList<>();
             ArrayList<Double> nonNanhavaintolista = new ArrayList<>();
+            boolean datakunnossa = true;
             for (JTextField kentta : this.havainnot) {
 
                 if (!kentta.getText().isEmpty()) {
-                    Double havainto = Double.parseDouble(kentta.getText());
-                    havaintolista.add(havainto);
-                    kentta.setText("");
-                    nonNanhavaintolista.add(havainto);
+                    if (this.tryParseDouble(kentta.getText())) {
+                        Double havainto = Double.parseDouble(kentta.getText());
+                        havaintolista.add(havainto);
+                        kentta.setText("");
+                        nonNanhavaintolista.add(havainto);
+                    } else if (this.tryParseInt(teksti)) {
+                        int havainto = Integer.parseInt(kentta.getText());
+                        havaintolista.add((double) havainto);
+                        kentta.setText("");
+                        nonNanhavaintolista.add((double) havainto);
+                    } else {
+                        int o = 1;
+                        this.kayttis.tarkistaSyottamasiData(o);
+                        datakunnossa = false;
+                    }
+
                 } else {
                     havaintolista.add(Double.NaN);
                 }
@@ -155,11 +168,8 @@ public class KlikkaustenKuuntelija implements ActionListener {
             int muuttujia = muuttujalista.size();
             int havaintoja = (int) nonNanhavaintolista.size() / muuttujalista.size();
             Double[][] taulukko = new Double[muuttujia][havaintoja];
-            System.out.println((int) nonNanhavaintolista.size() / muuttujalista.size());
-            System.out.println(nonNanhavaintolista);
-            System.out.println(muuttujalista.size());
-            System.out.println(havaintoja);
-            System.out.println("pöööö");
+
+
 
             ArrayList<String> henkilot = new ArrayList<>();
             for (int h = 0; h <= havaintoja; h++) {
@@ -186,8 +196,9 @@ public class KlikkaustenKuuntelija implements ActionListener {
 
             this.kayttis.getData().setData(taulukko);
             System.out.println(Arrays.deepToString(this.kayttis.getData().getData()));
-
-            this.kayttis.dataTallennettu();
+            if (datakunnossa) {
+                this.kayttis.dataTallennettu();
+            }
         } else if (ae.getSource() == palaa) {
             this.kayttis.tulostaPaavalikko();
         } else if (ae.getSource() == tunnarit) {
@@ -209,7 +220,7 @@ public class KlikkaustenKuuntelija implements ActionListener {
             Data data = new Data();
             this.kayttis.setData(data);
             this.kayttis.getData().setMuuttujaLista(muuttujanNimet);
-            
+
             Double[][] datataulukko = new Double[muuttujanNimet.size()][datalistat.get(muuttujanNimet.get(1)).size()];
             for (String nimi : datalistat.keySet()) {
                 for (int i = 0; i < datalistat.get(muuttujanNimet.get(1)).size(); i++) {
@@ -217,16 +228,13 @@ public class KlikkaustenKuuntelija implements ActionListener {
                 }
                 this.kayttis.getData().setData(datataulukko);
             }
-            
+
             ArrayList<String> henkilot = new ArrayList<>();
             for (int h = 0; h <= datalistat.get(muuttujanNimet.get(1)).size(); h++) {
                 henkilot.add("Kh" + h);
             }
             this.kayttis.getData().setHenkilot(henkilot);
-            
-            
-            
-            
+
             this.kayttis.dataTallennettu();
 
         } else if (ae.getSource() == ts) {
@@ -247,4 +255,23 @@ public class KlikkaustenKuuntelija implements ActionListener {
             }
         }
     }
+
+    boolean tryParseInt(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    boolean tryParseDouble(String value) {
+        try {
+            Double.parseDouble(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 }

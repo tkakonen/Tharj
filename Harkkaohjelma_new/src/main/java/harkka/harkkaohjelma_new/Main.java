@@ -8,6 +8,7 @@ package harkka.harkkaohjelma_new;
 import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
 import harkka.harkkaohjelma_new.kayttoliittyma.Kayttoliittyma;
 import java.util.ArrayList;
+import org.apache.commons.math3.distribution.TDistribution;
 
 /**
  *
@@ -20,6 +21,8 @@ public class Main {
      */
     public static void main(String[] args) throws TyhjaMuuttujaException {
 
+        TDistribution T = new TDistribution(12.0);
+        
         ArrayList<Double> lista = new ArrayList<>();
         lista.add(4.0);
         lista.add(4.0);

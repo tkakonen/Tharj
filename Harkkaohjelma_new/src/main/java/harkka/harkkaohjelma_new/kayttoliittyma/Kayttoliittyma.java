@@ -416,19 +416,20 @@ public class Kayttoliittyma implements Runnable {
         container.add(new JLabel("Yksisuuntainen varianssianalyysi, tulokset:"));
 
         ArrayList erilaiset = this.data.getMuuttuja(this.ryhmMuuttujanNimi).erilaisetArvot();
-        System.out.println(this.muuttujanNimi);
-        System.out.println(this.ryhmMuuttujanNimi);
-        System.out.println(this.data.getMuuttuja(this.ryhmMuuttujanNimi).getArvot());
-        System.out.println(erilaiset);
-
+        this.data.getMuuttuja(muuttujanNimi).setData(this.data);
+        this.data.getMuuttuja(ryhmMuuttujanNimi).setData(this.data);
         ArrayList ryhmat = this.data.getMuuttuja(muuttujanNimi).ryhmittele(this.ryhmMuuttujanNimi, erilaiset);
+
         ANOVA anova = new ANOVA(ryhmat);
-
+        anova.tulostaMuuttujat();
         container.add(new JLabel("F-testisuureen arvo:"));
-
         double ts = anova.laskeTestisuureenArvo();
-
         container.add(new JLabel("" + ts));
+
+        container.add(new JLabel("Vapausasteet: df(sis)=" + anova.dfSisainenVaihtelu() + ", df(väl)=" + anova.dfValinenVaihtelu()));
+
+        container.add(new JLabel("P-arvo:"));
+        container.add(new JLabel("" + anova.laskeP_arvo()));
 
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
@@ -565,6 +566,12 @@ public class Kayttoliittyma implements Runnable {
 
         container.add(new JLabel("" + ts));
 
+        container.add(new JLabel("Vapausasteet:"));
+        container.add(new JLabel("" + testi.laskeVapausasteet()));
+
+        container.add(new JLabel("P-arvo (2-tailed):"));
+        container.add(new JLabel("" + testi.laske_kaksisuuntainen_p_arvoTestisuureelle()));
+
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
@@ -616,6 +623,9 @@ public class Kayttoliittyma implements Runnable {
 
         container.add(new JLabel("" + ts));
 
+        container.add(new JLabel("P-arvo (2-tailed):"));
+        container.add(new JLabel("" + testi.laskeP_arvoTestisuureelle_kaksisuuntainen()));
+
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
@@ -656,6 +666,38 @@ public class Kayttoliittyma implements Runnable {
         this.frame.repaint();
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void tarkistaSyottamasiData(int ongelmanTyyppi) {
+        final JFrame tarkista = new JFrame("Ikkuna");
+        tarkista.setPreferredSize(new Dimension(300, 200));
+        tarkista.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        tarkista.setBackground(Color.white);
+        Container container = tarkista.getContentPane();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        container.add(new JLabel("Datan tallentaminen ei onnistunut."));
+        if (ongelmanTyyppi == 1) {
+        container.add(new JLabel("Tarkista, että syöttämäsi data on numeerinen."));
+        container.add(new JLabel("Käytä desimaalierottimena pistettä."));
+        } else if (ongelmanTyyppi ==2) {
+        container.add(new JLabel("Tarkista, että kaikilla muuttujilla on nimi."));
+        }
+        ButtonGroup buttonGroup3 = new ButtonGroup();
+
+        JButton ok = new JButton("OK");
+        buttonGroup3.add(ok);
+        container.add(ok);
+        ActionListener klik = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tarkista.dispose();
+            }
+        };
+        ok.addActionListener(klik);
+        tarkista.pack();
+        tarkista.setVisible(true);
+
     }
 
 }

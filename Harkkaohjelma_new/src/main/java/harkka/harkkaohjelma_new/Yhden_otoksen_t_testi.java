@@ -1,11 +1,12 @@
 package harkka.harkkaohjelma_new;
 
 import java.util.ArrayList;
-
+import org.apache.commons.math3.distribution.TDistribution;
 
 /**
- * Yhden otoksen t-testin avulla voi laskea testisuureen, jonka avulla voidaan päätellä eroaako tietyn muuttujan
- * keskiarvo jostain ennalta asetetusta luvusta.
+ * Yhden otoksen t-testin avulla voi laskea testisuureen, jonka avulla voidaan
+ * päätellä eroaako tietyn muuttujan keskiarvo jostain ennalta asetetusta
+ * luvusta.
  *
  */
 public class Yhden_otoksen_t_testi {
@@ -42,15 +43,16 @@ public class Yhden_otoksen_t_testi {
         return df;
     }
 
-    //////TÃ¤ssÃ¤ kohtaa tarvitsisin t-jakaumasta saatavia arvoja.
-    //////TDistribution jakauma = new TDistribution(laskeVapausasteet()).
-    public void luoJakauma() {
-
+    public double laske_yksisuuntainen_P_arvoTestisuureelle() {
+        TDistribution T = new TDistribution(this.laskeVapausasteet());
+        double p = T.cumulativeProbability(this.laskeTestisuureenArvo());
+        return p;
     }
 
-    public double laskeP_arvoTestisuureelle() {
-        return 0;
-
+    public double laske_kaksisuuntainen_p_arvoTestisuureelle() {
+        TDistribution T = new TDistribution(this.laskeVapausasteet());
+        double p = 2*T.cumulativeProbability(this.laskeTestisuureenArvo());
+        return p;
     }
 
 }

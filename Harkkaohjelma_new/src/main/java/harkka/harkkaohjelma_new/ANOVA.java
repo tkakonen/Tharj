@@ -6,6 +6,7 @@
 package harkka.harkkaohjelma_new;
 
 import java.util.ArrayList;
+import org.apache.commons.math3.distribution.FDistribution;
 
 /**
  * ANOVA (Analysis of variance) tarjoaa metodin, jolla voi laskea X määrän muuttujia välisen yksisuuntaisen varianssi-
@@ -102,6 +103,13 @@ public class ANOVA {
         double testisuure = 1.0 * this.MSvalinenVaihtelu() / this.MSsisainenVaihtelu();
         return testisuure;
     }
+    
+    public double laskeP_arvo() {
+        FDistribution F = new FDistribution(this.dfValinenVaihtelu(),this.dfSisainenVaihtelu());
+        double p = F.cumulativeProbability(this.laskeTestisuureenArvo());
+        return p;
+    }
+    
     
     public void tulostaMuuttujat() {
         for (Muuttuja muuttuja: this.muuttujat) {
