@@ -1,11 +1,5 @@
-Kuvaus1
+Ohjelman aiheenkuvaus
 
-Aihe: Jonkinlainen tilasto-ohjelma (laskee tilastollisia vastauksia muutamalla tilastollisella menetelmällä pienillä syötteillä). Vaihtoehtoisesti jonkinlainen tilastotieteen harjoitteluohjelma. Jos nuo eivät ota onnistuakseen, yksi vaihtoehto olisi ihan aritmetiikan harjoitteluohjelma lapsille, jossa voisi harjoitella mm. kertotauluja. 
+Kyseessä on pienimuotoinen tilasto-ohjelma. Ohjelmalle syötetään data, joka voidaan joko lukea tiedostosta tai syöttää graafisen käyttöliittymän kautta. Ohjelmalla voidaan laskea perustavanlaatuisimmat tilastolliset tunnusluvut (keskiarvo, varianssi) datasta. Lisäksi voidaan suorittaa muutamia tilastollisia testejä: yhden otoksen t-testi, riippumattomien otosten t-testi ja varianssianalyysi. Ohjelma ilmoittaa näiden testien yhteydessä testisuureen arvon, sekä p-arvon, jonka avulla voidaan päätellä pitääkö niin kutsuttu nollahypoteesi paikkansa. Kaikki tämän ohjelman tilastolliset testit liittyvät keskiarvojen vertailuun eri ryhmien välillä. Nollahypoteesi on, että ryhmien keskiarvojen välillä ei ole populaatiotasolla eroa.
 
-Käyttäjät: Minä itse (tai vaihtoehtoisesti joku lapsi, jos kyseessä aritmetiikan harjoitteluohjelma)
-
-Kaikkien käyttäjien toiminnot: Tilasto-ohjelmassa: Tallenna/syötä aineisto; lue aineisto, valitse käytettävä menetelmä, valitse parametrit, tulosta tulokset.
-
-Kaikkien käyttäjien toiminnot: Tilastotieteen harjoitteluohjelma: esim. valitse menetelmä, vastaa tähän liittyviin kysymyksiin jne.  
-
-Kaikkien käyttäjien toiminnot: Aritmetiikan harjoitteluohjelma: valitse esim. harjoiteltava kertotaulu, harjoittele, laske oikein ja väärin menneiden vastauksien lukumäärät jne. 
+Ohjelma on suunnattu tilastotiedettä jonkin verran tuntevalle käyttäjälle. Tavoitteena olisi, että ohjelmaa voi laajentaa lisäämällä siihen muita tilastollisia testejä ja vaikka lisätietoa siitä, mitä minkäkinlainen testitulos merkitsee ja ovatko tilastollisen testin oletukset voimassa. 
