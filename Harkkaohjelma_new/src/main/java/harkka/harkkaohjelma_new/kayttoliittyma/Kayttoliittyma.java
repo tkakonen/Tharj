@@ -419,7 +419,7 @@ public class Kayttoliittyma implements Runnable {
         } else {
             container.add(new JLabel("Yhden otoksen t-testi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
-            container.add(new JLabel("Riippuvan muuttujan nimi"));
+            container.add(new JLabel("Muuttujan1 nimi"));
             ButtonGroup buttonGroup = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
                 JRadioButton nappula = new JRadioButton(nimi);
@@ -428,7 +428,7 @@ public class Kayttoliittyma implements Runnable {
                 nappula.addItemListener(itemlisten);
                 nappula.setName(nimi);
             }
-            container.add(new JLabel("Ryhmittelevän muuttujan nimi"));
+            container.add(new JLabel("Muuttujan2 nimi"));
             ButtonGroup buttonGroup2 = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
                 JRadioButton nappula = new JRadioButton(nimi);
