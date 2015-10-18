@@ -103,6 +103,8 @@ public class KlikkaustenKuuntelija implements ActionListener {
                 this.kayttis.syotaData();
             } else if (this.kayttis.getValinnanNro() == 3) {
                 this.kayttis.analysoi();
+            } else if (this.kayttis.getValinnanNro() == 4) {
+                this.kayttis.tarkasteleDataa();
             } else if (this.kayttis.getValinnanNro() == 5) {
                 this.kayttis.lopeta();
             }

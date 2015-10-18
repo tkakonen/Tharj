@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -32,6 +33,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -678,10 +681,10 @@ public class Kayttoliittyma implements Runnable {
         container.setLayout(layout);
         container.add(new JLabel("Datan tallentaminen ei onnistunut."));
         if (ongelmanTyyppi == 1) {
-        container.add(new JLabel("Tarkista, että syöttämäsi data on numeerinen."));
-        container.add(new JLabel("Käytä desimaalierottimena pistettä."));
-        } else if (ongelmanTyyppi ==2) {
-        container.add(new JLabel("Tarkista, että kaikilla muuttujilla on nimi."));
+            container.add(new JLabel("Tarkista, että syöttämäsi data on numeerinen."));
+            container.add(new JLabel("Käytä desimaalierottimena pistettä."));
+        } else if (ongelmanTyyppi == 2) {
+            container.add(new JLabel("Tarkista, että kaikilla muuttujilla on nimi."));
         }
         ButtonGroup buttonGroup3 = new ButtonGroup();
 
@@ -698,6 +701,48 @@ public class Kayttoliittyma implements Runnable {
         tarkista.pack();
         tarkista.setVisible(true);
 
+    }
+
+    public void tarkasteleDataa() {
+        this.frame.setBackground(Color.white);
+        Container container = this.frame.getContentPane();
+        container.removeAll();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+
+        String[] nimet = new String[this.data.getMuuttujanNimet().size()];
+        int i = 0;
+        for (String nimi : this.data.getMuuttujanNimet()) {
+            nimet[i] = nimi;
+            i = i + 1;
+        }
+
+        System.out.println(Arrays.deepToString(this.data.getData()));
+        System.out.println(Arrays.deepToString(nimet));
+
+        int h = this.data.getHenkilot().size();
+        int m = this.data.getMuuttujanNimet().size();
+        System.out.println(h);
+        System.out.println(m);
+        Double[][] taulu = new Double[10][3];
+        for (int a = 0; a < this.data.getHenkilot().size()-1; a++) {
+            for (int k = 0; k < this.data.getMuuttujanNimet().size(); k++) {
+                taulu[a][k] = this.getData().getData()[k][a];
+            }
+        }
+
+        JTable table = new JTable(taulu, nimet);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.setFillsViewportHeight(true);
+        container.add(scrollPane);
+
+        JButton palaa = new JButton("Palaa päävalikkoon");
+        container.add(palaa);
+        palaa.addActionListener(listen);
+        listen.setPalaa(palaa);
+
+        this.asetaIkkuna();
     }
 
 }
