@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -41,6 +42,8 @@ public class KlikkaustenKuuntelija implements ActionListener {
     private JButton ts;
     private JButton lueData;
     private JTextField filename;
+    private JTable taulukko;
+    private int virheenTyyppi;
 
     public KlikkaustenKuuntelija(Kayttoliittyma kayttis) {
         this.kayttis = kayttis;
@@ -94,6 +97,10 @@ public class KlikkaustenKuuntelija implements ActionListener {
         this.filename = filename;
     }
 
+    public void setTaulukko(JTable taulukko) {
+        this.taulukko = taulukko;
+    }
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == valitse) {
@@ -122,139 +129,15 @@ public class KlikkaustenKuuntelija implements ActionListener {
                 this.kayttis.lopeta();
             }
         } else if (ae.getSource() == tallenna) {
-            String teksti = this.datannimi.getText();
-            this.kayttis.setData(new Data());
-            this.kayttis.getData().setName(teksti);
-            this.datannimi.setText("");
-            System.out.println(this.kayttis.getData().getName());
-
-            ArrayList<String> muuttujalista = new ArrayList<>();
-            for (TextField kentta : this.muuttujat) {
-                String muuttujannimi = kentta.getText();
-                if (!muuttujannimi.isEmpty()) {
-                    muuttujalista.add(muuttujannimi);
-                    kentta.setText("");
-                }
-            }
-            this.kayttis.getData().setMuuttujaLista(muuttujalista);
-            System.out.println(this.kayttis.getData().getMuuttujanNimet());
-
-            ArrayList<Double> havaintolista = new ArrayList<>();
-            ArrayList<Double> nonNanhavaintolista = new ArrayList<>();
-            boolean datakunnossa = true;
-            for (JTextField kentta : this.havainnot) {
-
-                if (!kentta.getText().isEmpty()) {
-                    if (this.tryParseDouble(kentta.getText())) {
-                        Double havainto = Double.parseDouble(kentta.getText());
-                        havaintolista.add(havainto);
-                        kentta.setText("");
-                        nonNanhavaintolista.add(havainto);
-                    } else if (this.tryParseInt(teksti)) {
-                        int havainto = Integer.parseInt(kentta.getText());
-                        havaintolista.add((double) havainto);
-                        kentta.setText("");
-                        nonNanhavaintolista.add((double) havainto);
-                    } else {
-                        int o = 1;
-                        this.kayttis.tarkistaSyottamasiData(o);
-                        datakunnossa = false;
-                    }
-
-                } else {
-                    havaintolista.add(Double.NaN);
-                }
-
-            }
-            System.out.println(havaintolista);
-            int muuttujia = muuttujalista.size();
-            int havaintoja = (int) nonNanhavaintolista.size() / muuttujalista.size();
-            Double[][] taulukko = new Double[muuttujia][havaintoja];
-
-
-
-            ArrayList<String> henkilot = new ArrayList<>();
-            for (int h = 0; h <= havaintoja; h++) {
-                henkilot.add("Kh" + h);
-            }
-            this.kayttis.getData().setHenkilot(henkilot);
-
-            int i = 0;
-            int j = 0;
-            for (Double luku : nonNanhavaintolista) {
-                System.out.println(i);
-                System.out.println(j);
-                taulukko[i][j] = luku;
-                i = i + 1;
-
-                if ((i) % muuttujia == 0) {
-                    j = j + 1;
-                    i = 0;
-                }
-
-            }
-
-            System.out.println(Arrays.deepToString(taulukko));
-
-            this.kayttis.getData().setData(taulukko);
-            System.out.println(Arrays.deepToString(this.kayttis.getData().getData()));
-            if (datakunnossa) {
-                this.kayttis.dataTallennettu();
-            }
+            this.lueTaulukko();
         } else if (ae.getSource() == palaa) {
             this.kayttis.tulostaPaavalikko();
         } else if (ae.getSource() == tunnarit) {
             this.kayttis.tulostaTunnarit();
         } else if (ae.getSource() == lueData) {
-            this.kayttis.setTiedostonNimi(filename.getText());
-            TiedostonLukija lukija = new TiedostonLukija();
-            HashMap<String, ArrayList<Double>> datalistat = new HashMap<>();
-            try {
-                System.out.println(filename.getText());
-                datalistat = lukija.lue(filename.getText());
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            ArrayList<String> muuttujanNimet = new ArrayList<>();
-            for (String nimi : datalistat.keySet()) {
-                muuttujanNimet.add(nimi);
-            }
-            Data data = new Data();
-            this.kayttis.setData(data);
-            this.kayttis.getData().setMuuttujaLista(muuttujanNimet);
-
-            Double[][] datataulukko = new Double[muuttujanNimet.size()][datalistat.get(muuttujanNimet.get(1)).size()];
-            for (String nimi : datalistat.keySet()) {
-                for (int i = 0; i < datalistat.get(muuttujanNimet.get(1)).size(); i++) {
-                    datataulukko[muuttujanNimet.indexOf(nimi)][i] = datalistat.get(nimi).get(i);
-                }
-                this.kayttis.getData().setData(datataulukko);
-            }
-
-            ArrayList<String> henkilot = new ArrayList<>();
-            for (int h = 0; h <= datalistat.get(muuttujanNimet.get(1)).size(); h++) {
-                henkilot.add("Kh" + h);
-            }
-            this.kayttis.getData().setHenkilot(henkilot);
-
-            this.kayttis.dataTallennettu();
-
+            this.lueData();
         } else if (ae.getSource() == ts) {
-            if (this.kayttis.getValinnanNro() == 2) {
-                Double myynolla = Double.parseDouble(this.myy.getText());
-                this.myy.setText("");
-                this.kayttis.setMyy(myynolla);
-                this.kayttis.tTestitulos();
-            }
-            if (this.kayttis.getValinnanNro() == 3) {
-                try {
-                    this.kayttis.Ttestitulos2();
-                } catch (TyhjaMuuttujaException ex) {
-                    Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if (this.kayttis.getValinnanNro() == 4) {
-                this.kayttis.anovaTulos();
-            }
+            this.laskeTestisuure();
         }
     }
 
@@ -276,4 +159,139 @@ public class KlikkaustenKuuntelija implements ActionListener {
         }
     }
 
+    public boolean tarkistaData(HashMap<String, ArrayList<Double>> listat) {
+        int listatJoillaAlkioita = 0;
+        ArrayList<Integer> listojenKoot = new ArrayList<>();
+        for (String nimi : listat.keySet()) {
+            if (!listat.get(nimi).isEmpty()) {
+                listatJoillaAlkioita = listatJoillaAlkioita + 1;
+                listojenKoot.add(listat.get(nimi).size());
+            }
+        }
+        if (listatJoillaAlkioita != listat.keySet().size()) {
+            return false;
+        } else if (listat.keySet().isEmpty()) {
+            this.virheenTyyppi=1;
+            return false;
+        }
+        int ekanKoko = listojenKoot.get(0);
+        for (int i : listojenKoot) {
+            if (i != ekanKoko) {
+                this.virheenTyyppi=2;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void lueData() {
+        this.kayttis.setTiedostonNimi(filename.getText());
+        TiedostonLukija lukija = new TiedostonLukija();
+        HashMap<String, ArrayList<Double>> datalistat = new HashMap<>();
+        try {
+            System.out.println(filename.getText());
+            datalistat = lukija.lue(filename.getText());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ArrayList<String> muuttujanNimet = new ArrayList<>();
+        for (String nimi : datalistat.keySet()) {
+            muuttujanNimet.add(nimi);
+        }
+        Data data = new Data();
+        this.kayttis.setData(data);
+        this.kayttis.getData().setMuuttujaLista(muuttujanNimet);
+        Double[][] datataulukko = new Double[muuttujanNimet.size()][datalistat.get(muuttujanNimet.get(1)).size()];
+        for (String nimi : datalistat.keySet()) {
+            for (int i = 0; i < datalistat.get(muuttujanNimet.get(1)).size(); i++) {
+                datataulukko[muuttujanNimet.indexOf(nimi)][i] = datalistat.get(nimi).get(i);
+            }
+            this.kayttis.getData().setData(datataulukko);
+        }
+        ArrayList<String> henkilot = new ArrayList<>();
+        for (int h = 0; h <= datalistat.get(muuttujanNimet.get(1)).size(); h++) {
+            henkilot.add("Kh" + h);
+        }
+        this.kayttis.getData().setHenkilot(henkilot);
+        this.kayttis.dataTallennettu();
+    }
+
+    public void laskeTestisuure() {
+        if (this.kayttis.getValinnanNro() == 2) {
+            Double myynolla = Double.parseDouble(this.myy.getText());
+            this.myy.setText("");
+            this.kayttis.setMyy(myynolla);
+            this.kayttis.tTestitulos();
+        }
+        if (this.kayttis.getValinnanNro() == 3) {
+            try {
+                this.kayttis.Ttestitulos2();
+            } catch (TyhjaMuuttujaException ex) {
+                Logger.getLogger(KlikkaustenKuuntelija.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (this.kayttis.getValinnanNro() == 4) {
+            this.kayttis.anovaTulos();
+        }
+    }
+
+    public void lueTaulukko() {
+        String teksti = this.datannimi.getText();
+        this.datannimi.setText("");
+        ArrayList<String> muuttujalista = new ArrayList<>();
+        for (TextField kentta : this.muuttujat) {
+            String muuttujannimi = kentta.getText();
+            if (!muuttujannimi.isEmpty()) {
+                muuttujalista.add(muuttujannimi);
+                kentta.setText("");
+            }
+        }
+        HashMap<String, ArrayList<Double>> listat = new HashMap<>();
+        for (String nimi : muuttujalista) {
+            listat.put(nimi, new ArrayList<Double>());
+        }
+        int nimenNro = 0;
+        for (String nimi : listat.keySet()) {
+            for (int i = 0; i < 10; i++) {
+                Object value = this.taulukko.getValueAt(i, nimenNro);
+                if (value != null) {
+                    String arvo = value.toString();
+                    if (this.tryParseDouble(arvo)) {
+                        Double havainto = Double.parseDouble(arvo);
+                        listat.get(nimi).add(havainto);
+                    } else if (this.tryParseInt(arvo)) {
+                        int havainto = Integer.parseInt(arvo);
+                        listat.get(nimi).add((double) havainto);
+                    } else {
+                        this.virheenTyyppi = 1;
+                        this.kayttis.tarkistaSyottamasiData();
+                    }
+                }
+            }
+            nimenNro = nimenNro + 1;
+        }
+        if (this.tarkistaData(listat)) {
+            this.kayttis.setData(new Data());
+            this.kayttis.getData().setName(teksti);
+            this.kayttis.getData().setMuuttujaLista(muuttujalista);
+            Double[][] datataulukko = new Double[muuttujalista.size()][listat.get(muuttujalista.get(1)).size()];
+            for (String nimi : listat.keySet()) {
+                for (int i = 0; i < listat.get(muuttujalista.get(1)).size(); i++) {
+                    datataulukko[muuttujalista.indexOf(nimi)][i] = listat.get(nimi).get(i);
+                }
+                this.kayttis.getData().setData(datataulukko);
+            }
+            ArrayList<String> henkilot = new ArrayList<>();
+            for (int h = 0; h <= listat.get(muuttujalista.get(1)).size(); h++) {
+                henkilot.add("Kh" + h);
+            }
+            this.kayttis.getData().setHenkilot(henkilot);
+            this.kayttis.dataTallennettu();
+        } else {
+            this.kayttis.tarkistaSyottamasiData();
+        }
+    }
+    
+    public int getVirheenTyyppi() {
+        return this.virheenTyyppi;
+    }
 }

@@ -26,17 +26,14 @@ public class TiedostonLukija {
     public HashMap<String, ArrayList<Double>> lue(String tiedosto) throws FileNotFoundException {
         File luettavatiedosto = new File(tiedosto);
         Scanner lukija = new Scanner(luettavatiedosto);
-
         HashMap<String, ArrayList<Double>> listat = new HashMap<>();
         ArrayList<String> muuttujatArrayna = new ArrayList<>();
         String header = lukija.nextLine();
         String[] muuttujienNimet = header.split(";");
-
         for (String nimi : muuttujienNimet) {
             listat.put(nimi, new ArrayList<Double>());
             muuttujatArrayna.add(nimi);
         }
-
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             String[] jaettuRivi = rivi.split(";");
@@ -46,7 +43,6 @@ public class TiedostonLukija {
                 String name = muuttujatArrayna.get(i);
                 listat.get(name).add(arvo);
             }
-
         }
         lukija.close();
         return listat;

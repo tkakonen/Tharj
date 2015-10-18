@@ -39,6 +39,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -92,13 +93,8 @@ public class Kayttoliittyma implements Runnable {
     }
 
     public void tulostaPaavalikko() {
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("VALIKKO:"));
-
         ButtonGroup buttonGroup = new ButtonGroup();
         JRadioButton lue = new JRadioButton("Lue data");
         buttonGroup.add(lue);
@@ -125,20 +121,16 @@ public class Kayttoliittyma implements Runnable {
         container.add(lopeta);
         lopeta.setName("lopeta");
         lopeta.addItemListener(itemlisten);
-
         ButtonGroup buttonGroup2 = new ButtonGroup();
         JButton valitse = new JButton("Valitse");
         buttonGroup2.add(valitse);
         listen.setButtonValitse(valitse);
         valitse.addActionListener(listen);
         container.add(valitse);
-
         if (this.data != null) {
             container.add(new JLabel("Käytössäsi on data '" + this.data.getName() + "'"));
         }
-
         this.asetaIkkuna();
-
     }
 
     public int getValinnanNro() {
@@ -152,14 +144,12 @@ public class Kayttoliittyma implements Runnable {
     public void setFrame() {
         frame = new JFrame("Ikkuna");
         frame.setPreferredSize(new Dimension(700, 500));
-
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public void kaynnistaGraafinenKayttoliittyma() {
         this.setFrame();
         tulostaPaavalikko();
-
         frame.pack();
         frame.setVisible(true); // Luo sovelluksesi tänne
     }
@@ -207,7 +197,6 @@ public class Kayttoliittyma implements Runnable {
         panel.add(y);
         y.addActionListener(listen);
         listen.setTextFieldDatannimi(y);
-
         return panel;
     }
 
@@ -227,6 +216,7 @@ public class Kayttoliittyma implements Runnable {
 
     public void syotaData() {
         this.frame.setBackground(Color.white);
+        frame.setPreferredSize(new Dimension(1200, 720));
         Container container = this.frame.getContentPane();
         container.removeAll();
         GridLayout layout = new GridLayout(4, 1);
@@ -234,21 +224,13 @@ public class Kayttoliittyma implements Runnable {
         container.add(this.datanNimi(), BorderLayout.SOUTH);
         container.add(this.muuttujaNimet(), BorderLayout.SOUTH);
         container.add(this.havainnotTallenna());
-        container.add(this.luoValikko(), BorderLayout.SOUTH);
-
+        container.add(this.taulukko(), BorderLayout.SOUTH);
         this.asetaIkkuna();
-
     }
 
     public void analysoi() {
-
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("VALITSE ANALYYSI:"));
-
         ButtonGroup buttonGroup = new ButtonGroup();
         JRadioButton perus = new JRadioButton("Perutunnusluvut");
         buttonGroup.add(perus);
@@ -275,17 +257,13 @@ public class Kayttoliittyma implements Runnable {
         container.add(lopeta);
         lopeta.setName("lopeta");
         lopeta.addItemListener(itemlisten);
-
         ButtonGroup buttonGroup2 = new ButtonGroup();
         JButton valitse2 = new JButton("Valitse");
         buttonGroup2.add(valitse2);
-
         listen.setButtonValitse2(valitse2);
         valitse2.addActionListener(listen);
         container.add(valitse2);
-        JButton palaa = new JButton("Palaa päävalikkoon");
-        palaa.addActionListener(listen);
-        listen.setPalaa(palaa);
+        container.add(this.addPalaa());
         this.asetaIkkuna();
     }
 
@@ -312,7 +290,6 @@ public class Kayttoliittyma implements Runnable {
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         tallennettu.pack();
         tallennettu.setVisible(
                 true);
@@ -320,22 +297,12 @@ public class Kayttoliittyma implements Runnable {
     }
 
     public void perusTunnusLuvut() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         if (this.data == null) {
-            container.add(new JLabel("Et ole syöttänyt dataa"));
-            JButton palaa = new JButton("Palaa päävalikkoon");
-            container.add(palaa);
-            palaa.addActionListener(listen);
-            listen.setPalaa(palaa);
-            this.asetaIkkuna();
+            this.dataaEiSyotetty(container);
         } else {
             container.add(new JLabel("Valitse muuttuja, jonka perustunnusluvut haluat tulostaa:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
-
             container.add(new JLabel("Muuttujan nimi"));
             ButtonGroup buttonGroup = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
@@ -345,36 +312,19 @@ public class Kayttoliittyma implements Runnable {
                 nappula.setName(nimi);
                 nappula.addItemListener(itemlisten);
             }
-
             JButton tulostaTunnusluvut = new JButton("Tulosta tunnusluvut");
             container.add(tulostaTunnusluvut);
             tulostaTunnusluvut.addActionListener(listen);
             listen.setTunnarit(tulostaTunnusluvut);
-            JButton palaa = new JButton("Palaa päävalikkoon");
-            container.add(palaa);
-            palaa.addActionListener(listen);
-            listen.setPalaa(palaa);
-
+            container.add(this.addPalaa());
             this.asetaIkkuna();
-
         }
     }
 
     public void anova() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         if (this.data == null) {
-            container.add(new JLabel("Et ole syöttänyt dataa"));
-            JButton palaa = new JButton("Palaa päävalikkoon");
-            container.add(palaa);
-            palaa.addActionListener(listen);
-            listen.setPalaa(palaa);
-            this.frame.repaint();
-            frame.pack();
-            frame.setVisible(true);
+            this.dataaEiSyotetty(container);
         } else {
             container.add(new JLabel("Yksisuuntainen varianssianalyysi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
@@ -387,9 +337,7 @@ public class Kayttoliittyma implements Runnable {
                 nappula.addItemListener(itemlisten);
                 nappula.setName(nimi);
             }
-
             container.add(new JLabel("Ryhmittelevän muuttujan nimi"));
-
             ButtonGroup buttonGroup2 = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
                 JRadioButton nappula = new JRadioButton(nimi);
@@ -398,67 +346,45 @@ public class Kayttoliittyma implements Runnable {
                 nappula.addItemListener(itemlisten);
                 nappula.setName(nimi + "2");
             }
-
             ButtonGroup buttonGroup3 = new ButtonGroup();
             JButton ts = new JButton("Laske testisuure");
             buttonGroup3.add(ts);
             listen.setTs(ts);
             ts.addActionListener(listen);
             container.add(ts);
-
             this.asetaIkkuna();
         }
     }
 
     public void anovaTulos() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("Yksisuuntainen varianssianalyysi, tulokset:"));
-
         ArrayList erilaiset = this.data.getMuuttuja(this.ryhmMuuttujanNimi).erilaisetArvot();
         this.data.getMuuttuja(muuttujanNimi).setData(this.data);
         this.data.getMuuttuja(ryhmMuuttujanNimi).setData(this.data);
         ArrayList ryhmat = this.data.getMuuttuja(muuttujanNimi).ryhmittele(this.ryhmMuuttujanNimi, erilaiset);
-
         ANOVA anova = new ANOVA(ryhmat);
         anova.tulostaMuuttujat();
         container.add(new JLabel("F-testisuureen arvo:"));
         double ts = anova.laskeTestisuureenArvo();
         container.add(new JLabel("" + ts));
-
         container.add(new JLabel("Vapausasteet: df(sis)=" + anova.dfSisainenVaihtelu() + ", df(väl)=" + anova.dfValinenVaihtelu()));
-
         container.add(new JLabel("P-arvo:"));
         container.add(new JLabel("" + anova.laskeP_arvo()));
-
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         this.asetaIkkuna();
     }
 
     public void t_testaa() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         if (this.data == null) {
-            container.add(new JLabel("Et ole syöttänyt dataa"));
-            JButton palaa = new JButton("Palaa päävalikkoon");
-            container.add(palaa);
-            palaa.addActionListener(listen);
-            listen.setPalaa(palaa);
-            this.asetaIkkuna();
+            this.dataaEiSyotetty(container);
         } else {
             container.add(new JLabel("Yhden otoksen t-testi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
-
             container.add(new JLabel("Riippuvan muuttujan nimi"));
             ButtonGroup buttonGroup = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
@@ -475,37 +401,21 @@ public class Kayttoliittyma implements Runnable {
             container.add(myy);
             myy.addActionListener(listen);
             listen.setTextFieldMyy(myy);
-
             ButtonGroup buttonGroup2 = new ButtonGroup();
             JButton ts = new JButton("Laske testisuure");
             buttonGroup2.add(ts);
             listen.setTs(ts);
             ts.addActionListener(listen);
             container.add(ts);
-
         }
-
-        JButton palaa = new JButton("Palaa päävalikkoon");
-        container.add(palaa);
-        palaa.addActionListener(listen);
-        listen.setPalaa(palaa);
-
+        container.add(this.addPalaa());
         this.asetaIkkuna();
     }
 
     public void ttestaa2() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         if (this.data == null) {
-            container.add(new JLabel("Et ole syöttänyt dataa"));
-            JButton palaa = new JButton("Palaa päävalikkoon");
-            container.add(palaa);
-            palaa.addActionListener(listen);
-            listen.setPalaa(palaa);
-            this.asetaIkkuna();
+            this.dataaEiSyotetty(container);
         } else {
             container.add(new JLabel("Yhden otoksen t-testi:"));
             container.add(new JLabel("Kaytossasi on data: " + this.data.getName()));
@@ -518,9 +428,7 @@ public class Kayttoliittyma implements Runnable {
                 nappula.addItemListener(itemlisten);
                 nappula.setName(nimi);
             }
-
             container.add(new JLabel("Ryhmittelevän muuttujan nimi"));
-
             ButtonGroup buttonGroup2 = new ButtonGroup();
             for (String nimi : this.data.getMuuttujanNimet()) {
                 JRadioButton nappula = new JRadioButton(nimi);
@@ -529,21 +437,14 @@ public class Kayttoliittyma implements Runnable {
                 nappula.addItemListener(itemlisten);
                 nappula.setName(nimi + "2");
             }
-
             ButtonGroup buttonGroup3 = new ButtonGroup();
             JButton ts = new JButton("Laske testisuure");
             buttonGroup3.add(ts);
             listen.setTs(ts);
             ts.addActionListener(listen);
             container.add(ts);
-
         }
-
-        JButton palaa = new JButton("Palaa päävalikkoon");
-        container.add(palaa);
-        palaa.addActionListener(listen);
-        listen.setPalaa(palaa);
-
+        container.add(this.addPalaa());
         this.asetaIkkuna();
     }
 
@@ -552,116 +453,75 @@ public class Kayttoliittyma implements Runnable {
     }
 
     public void tTestitulos() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("Yhden otoksen t-testi, tulokset:"));
         container.add(new JLabel("Muuttujan keskiarvo: " + this.data.getMuuttuja(muuttujanNimi).Keskiarvo()));
         container.add(new JLabel("Vertaillaan keskiarvoon: " + this.myy));
-
         container.add(new JLabel("T-testisuureen arvo:"));
-
         Yhden_otoksen_t_testi testi = new Yhden_otoksen_t_testi();
         testi.lisaaParametrit(this.data.getMuuttuja(muuttujanNimi), myy);
         double ts = testi.laskeTestisuureenArvo();
-
         container.add(new JLabel("" + ts));
-
         container.add(new JLabel("Vapausasteet:"));
         container.add(new JLabel("" + testi.laskeVapausasteet()));
-
         container.add(new JLabel("P-arvo (2-tailed):"));
         container.add(new JLabel("" + testi.laske_kaksisuuntainen_p_arvoTestisuureelle()));
-
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         this.asetaIkkuna();
-
     }
 
     public void tulostaTunnarit() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("Muuttujan '" + this.getMuuttujanNimi() + "' perustunnusluvut:"));
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
         System.out.println(this.data.getMuuttuja(muuttujanNimi).getArvot());
-
         container.add(new JLabel("Keskiarvo: " + this.data.getMuuttuja(muuttujanNimi).Keskiarvo()));
         container.add(new JLabel("Otosvarianssi: " + this.data.getMuuttuja(muuttujanNimi).otosVarianssi()));
-
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         this.asetaIkkuna();
 
     }
 
     public void Ttestitulos2() throws TyhjaMuuttujaException {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("Yhden otoksen t-testi, tulokset:"));
         container.add(new JLabel("Muuttujan keskiarvo: " + this.data.getMuuttuja(muuttujanNimi).Keskiarvo()));
         container.add(new JLabel("Muuttujan keskiarvo: " + this.data.getMuuttuja(this.ryhmMuuttujanNimi).Keskiarvo()));
-
         container.add(new JLabel("T-testisuureen arvo:"));
-
         Kahden_otoksen_t_testi testi = new Kahden_otoksen_t_testi(this.data.getMuuttuja(muuttujanNimi), this.data.getMuuttuja(this.ryhmMuuttujanNimi));
-
         double ts = testi.laskeTestisuureenArvo();
-
         container.add(new JLabel("" + ts));
-
         container.add(new JLabel("P-arvo (2-tailed):"));
         container.add(new JLabel("" + testi.laskeP_arvoTestisuureelle_kaksisuuntainen()));
-
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         this.asetaIkkuna();
     }
 
     public void lueData() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
+        Container container = this.luoIkkuna();
         container.add(new JLabel("Luettavan tiedoston nimi: "));
-
         JTextField filename = new JTextField("");
         filename.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, filename.getPreferredSize().height));
         container.add(filename);
         filename.addActionListener(listen);
         listen.setFileName(filename);
-
         JButton lueData = new JButton("Lue tiedosto");
         lueData.addActionListener(listen);
         listen.setLueData(lueData);
         container.add(lueData);
-
-        JButton palaa = new JButton("Palaa päävalikkoon");
-        container.add(palaa);
-        palaa.addActionListener(listen);
-        listen.setPalaa(palaa);
-
+        container.add(this.addPalaa());
         this.asetaIkkuna();
     }
 
@@ -671,7 +531,7 @@ public class Kayttoliittyma implements Runnable {
         frame.setVisible(true);
     }
 
-    public void tarkistaSyottamasiData(int ongelmanTyyppi) {
+    public void tarkistaSyottamasiData() {
         final JFrame tarkista = new JFrame("Ikkuna");
         tarkista.setPreferredSize(new Dimension(300, 200));
         tarkista.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -680,14 +540,13 @@ public class Kayttoliittyma implements Runnable {
         BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
         container.setLayout(layout);
         container.add(new JLabel("Datan tallentaminen ei onnistunut."));
-        if (ongelmanTyyppi == 1) {
+        if (listen.getVirheenTyyppi() == 1) {
             container.add(new JLabel("Tarkista, että syöttämäsi data on numeerinen."));
             container.add(new JLabel("Käytä desimaalierottimena pistettä."));
-        } else if (ongelmanTyyppi == 2) {
+        } else if (listen.getVirheenTyyppi() == 2) {
             container.add(new JLabel("Tarkista, että kaikilla muuttujilla on nimi."));
         }
         ButtonGroup buttonGroup3 = new ButtonGroup();
-
         JButton ok = new JButton("OK");
         buttonGroup3.add(ok);
         container.add(ok);
@@ -704,45 +563,77 @@ public class Kayttoliittyma implements Runnable {
     }
 
     public void tarkasteleDataa() {
-        this.frame.setBackground(Color.white);
-        Container container = this.frame.getContentPane();
-        container.removeAll();
-        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
-        container.setLayout(layout);
-
+        Container container = this.luoIkkuna();
         String[] nimet = new String[this.data.getMuuttujanNimet().size()];
         int i = 0;
         for (String nimi : this.data.getMuuttujanNimet()) {
             nimet[i] = nimi;
             i = i + 1;
         }
-
-        System.out.println(Arrays.deepToString(this.data.getData()));
-        System.out.println(Arrays.deepToString(nimet));
-
         int h = this.data.getHenkilot().size();
         int m = this.data.getMuuttujanNimet().size();
-        System.out.println(h);
-        System.out.println(m);
         Double[][] taulu = new Double[10][3];
-        for (int a = 0; a < this.data.getHenkilot().size()-1; a++) {
+        for (int a = 0; a < this.data.getHenkilot().size() - 1; a++) {
             for (int k = 0; k < this.data.getMuuttujanNimet().size(); k++) {
                 taulu[a][k] = this.getData().getData()[k][a];
             }
         }
-
         JTable table = new JTable(taulu, nimet);
-
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
         container.add(scrollPane);
+        container.add(this.addPalaa());
+        this.asetaIkkuna();
+    }
 
+    public Container luoIkkuna() {
+        this.frame.setBackground(Color.white);
+        Container container = this.frame.getContentPane();
+        container.removeAll();
+        BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
+        container.setLayout(layout);
+        return container;
+    }
+
+    public JButton addPalaa() {
+        JButton palaa = new JButton("Palaa päävalikkoon");
+        palaa.addActionListener(listen);
+        listen.setPalaa(palaa);
+        return palaa;
+    }
+
+    public void dataaEiSyotetty(Container container) {
+        container.add(new JLabel("Et ole syöttänyt dataa"));
         JButton palaa = new JButton("Palaa päävalikkoon");
         container.add(palaa);
         palaa.addActionListener(listen);
         listen.setPalaa(palaa);
-
         this.asetaIkkuna();
+    }
+
+    public void taulukko2() {
+        Container container = this.luoIkkuna();
+        String[] colHeadings = {"COLUMN1", "COLUMN2"};
+        int numRows = 10;
+        DefaultTableModel model = new DefaultTableModel(numRows, colHeadings.length);
+        model.setColumnIdentifiers(colHeadings);
+        JTable table = new JTable(model);
+        container.add(table);
+        container.add(this.havainnotTallenna());
+        listen.setTaulukko(table);
+        this.asetaIkkuna();
+    }
+
+    public JScrollPane taulukko() {
+        String[] colHeadings = {"COLUMN1", "COLUMN2", "COLUMN3", "COLUMN4", "COLUMN5"};
+        int numRows = 10;
+        DefaultTableModel model = new DefaultTableModel(numRows, colHeadings.length);
+        model.setColumnIdentifiers(colHeadings);
+        JTable table = new JTable(model);        
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.setFillsViewportHeight(true);
+        listen.setTaulukko(table);
+        return scrollPane;
     }
 
 }
