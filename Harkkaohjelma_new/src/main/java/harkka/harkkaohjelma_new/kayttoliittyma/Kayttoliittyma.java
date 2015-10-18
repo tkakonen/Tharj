@@ -562,6 +562,9 @@ public class Kayttoliittyma implements Runnable {
 
     }
 
+    /**
+     * Luo näkymän, jossa voi tarkastella dataa. 
+     */
     public void tarkasteleDataa() {
         Container container = this.luoIkkuna();
         String[] nimet = new String[this.data.getMuuttujanNimet().size()];
@@ -572,7 +575,7 @@ public class Kayttoliittyma implements Runnable {
         }
         int h = this.data.getHenkilot().size();
         int m = this.data.getMuuttujanNimet().size();
-        Double[][] taulu = new Double[10][3];
+        Double[][] taulu = new Double[h][m];
         for (int a = 0; a < this.data.getHenkilot().size() - 1; a++) {
             for (int k = 0; k < this.data.getMuuttujanNimet().size(); k++) {
                 taulu[a][k] = this.getData().getData()[k][a];
@@ -586,8 +589,13 @@ public class Kayttoliittyma implements Runnable {
         this.asetaIkkuna();
     }
 
+    /**
+     * Tyhjentää ikkunan, asettaa layotin.
+     * @return container
+     */
     public Container luoIkkuna() {
         this.frame.setBackground(Color.white);
+        frame.setPreferredSize(new Dimension(700, 500));
         Container container = this.frame.getContentPane();
         container.removeAll();
         BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
@@ -595,6 +603,10 @@ public class Kayttoliittyma implements Runnable {
         return container;
     }
 
+    /**
+     * Lisää palaa päävalikkoon-nappulan.
+     * @return JButton palaa päävalikkoon
+     */
     public JButton addPalaa() {
         JButton palaa = new JButton("Palaa päävalikkoon");
         palaa.addActionListener(listen);
@@ -602,6 +614,10 @@ public class Kayttoliittyma implements Runnable {
         return palaa;
     }
 
+    /**
+     *Avaa ikkunan, joka ilmoittaa että dataa ei ole vielä syötetty eikä analyysia voida tehdä.
+     * @param container
+     */
     public void dataaEiSyotetty(Container container) {
         container.add(new JLabel("Et ole syöttänyt dataa"));
         JButton palaa = new JButton("Palaa päävalikkoon");
@@ -611,19 +627,10 @@ public class Kayttoliittyma implements Runnable {
         this.asetaIkkuna();
     }
 
-    public void taulukko2() {
-        Container container = this.luoIkkuna();
-        String[] colHeadings = {"COLUMN1", "COLUMN2"};
-        int numRows = 10;
-        DefaultTableModel model = new DefaultTableModel(numRows, colHeadings.length);
-        model.setColumnIdentifiers(colHeadings);
-        JTable table = new JTable(model);
-        container.add(table);
-        container.add(this.havainnotTallenna());
-        listen.setTaulukko(table);
-        this.asetaIkkuna();
-    }
-
+    /**
+     *Luo SyötäData-näkymän alalaidassa olevan taulukon.
+     * @return JScrollPane taulukko
+     */
     public JScrollPane taulukko() {
         String[] colHeadings = {"COLUMN1", "COLUMN2", "COLUMN3", "COLUMN4", "COLUMN5"};
         int numRows = 10;

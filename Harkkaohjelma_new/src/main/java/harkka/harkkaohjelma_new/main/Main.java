@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package harkka.harkkaohjelma_new;
+package harkka.harkkaohjelma_new.main;
 
 import harkka.harkkaohjelma_new.exceptions.TyhjaMuuttujaException;
 import harkka.harkkaohjelma_new.kayttoliittyma.Kayttoliittyma;

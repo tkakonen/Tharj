@@ -16,6 +16,7 @@ Ohjelman käyttöohjeet:
 
 4. Testien suorittamisesta ja tunnuslukujen laskemisesta:
 	1. Tunnuslukujen laskeminen tai testien suorittaminen ei välttämättä onnistu liian pienellä datalla (esim. 1 alkio)
+5. Kahden otoksen t-testi vertailee datan kahden eri muuttujan välisiä keskiarvoja.
 2. Varianssianalyysin suorittamisesta
 	1. Jotta varianssianalyysin suorittaminen onnistuu, toisen muuttujan on oltava niin sanottu RYHMITTELEVÄ MUUTTUJA. 
 	   Ryhmittelevä muuttuja kertoo, mihin ryhmään tietty havainto kuuluu. Esimerkki ryhmitellystä datasta:

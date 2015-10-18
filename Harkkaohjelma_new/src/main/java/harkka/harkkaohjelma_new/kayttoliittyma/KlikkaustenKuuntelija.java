@@ -120,7 +120,6 @@ public class KlikkaustenKuuntelija implements ActionListener {
                 this.kayttis.perusTunnusLuvut();
             } else if (this.kayttis.getValinnanNro() == 2) {
                 this.kayttis.t_testaa();
-                System.out.println("aaaaaa");
             } else if (this.kayttis.getValinnanNro() == 3) {
                 this.kayttis.ttestaa2();
             } else if (this.kayttis.getValinnanNro() == 4) {
